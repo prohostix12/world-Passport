@@ -112,9 +112,9 @@ export default function ContactPage() {
               </div>
 
               {[
-                { icon: Mail,   label: 'Email',  value: 'info@gecouncil.com' },
-                { icon: Phone,  label: 'Phone',  value: '+91 98765 43210' },
-                { icon: MapPin, label: 'Office', value: 'Mumbai, Delhi, Bangalore & Europe' },
+                { icon: Mail, label: 'Email', value: 'bmworldpassport.in' },
+                { icon: Phone, label: 'Phone', value: '+91 98765 43210' },
+                { icon: MapPin, label: 'Office', value: 'Ernakulam Near St.Georges Syro-Malabar Church,Edapally' },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-blue-50 border border-blue-100">
@@ -138,9 +138,9 @@ export default function ContactPage() {
               <div className="grid grid-cols-2 gap-3 pt-2">
                 {[
                   { val: '10,000+', label: 'Students Helped', color: '#2563EB' },
-                  { val: '98%',     label: 'Visa Approval',   color: '#DC2626' },
-                  { val: '100+',    label: 'Universities',     color: '#2563EB' },
-                  { val: '12',      label: 'Countries',        color: '#DC2626' },
+                  { val: '98%', label: 'Visa Approval', color: '#DC2626' },
+                  { val: '100+', label: 'Universities', color: '#2563EB' },
+                  { val: '12', label: 'Countries', color: '#DC2626' },
                 ].map(s => (
                   <div key={s.label} className="rounded-xl p-3 text-center bg-gray-50 border border-gray-100">
                     <div className="font-bold text-lg" style={{ color: s.color }}>{s.val}</div>

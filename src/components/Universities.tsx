@@ -136,28 +136,16 @@ export default function Universities() {
                   {/* Dark gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/30 to-transparent z-10" />
 
-                  {/* Top-Right Bubble Badge */}
-                  {u.ranking && (
-                    <div className="absolute top-3.5 right-3.5 z-20 w-8 h-8 rounded-full bg-slate-950/60 border border-white/20 backdrop-blur-sm flex items-center justify-center text-[10px] font-bold text-white shadow-md">
-                      {u.ranking}
-                    </div>
-                  )}
-
                   {/* Text Details overlaying the image */}
                   <div className="relative z-20 p-4 flex flex-col items-center text-center justify-end w-full">
-                    {/* Big country abbreviation code in the background of the text */}
-                    <div className="text-3xl font-black text-white/20 tracking-widest uppercase mb-0.5 select-none transition-colors duration-300 group-hover:text-white/35">
-                      {countryCode}
-                    </div>
-                    
                     {/* University Name */}
                     <h3 className="font-display font-bold text-white text-sm leading-tight mb-1 drop-shadow-md line-clamp-2 px-1">
                       {u.name}
                     </h3>
 
-                    {/* Subtext */}
+                    {/* Country */}
                     <span className="text-[10px] font-semibold text-sky-400 uppercase tracking-wider drop-shadow-sm">
-                      {u.city ? `${u.city}, ${u.country}` : u.country}
+                      {u.country}
                     </span>
                   </div>
                 </Link>

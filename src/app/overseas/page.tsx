@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AOSInit from '@/components/AOSInit';
@@ -9,109 +9,29 @@ import {
   Globe, GraduationCap, DollarSign, FileCheck, Plane, BookOpen,
   MapPin, Users, Star, ChevronRight, ArrowRight, CheckCircle,
   Clock, Award, Briefcase, TrendingUp, Building2, BadgeCheck,
-  Landmark, FlaskConical, Zap,
+  Landmark, FlaskConical, Zap, Search, ExternalLink, Loader2,
 } from 'lucide-react';
-import Image from 'next/image';
+
+/* ── University type from DB ── */
+interface UniversityDB {
+  _id: string;
+  name: string;
+  country: string;
+  city?: string;
+  type?: string;
+  description?: string;
+  image?: string;
+  ranking?: string;
+  website?: string;
+  availableCourses?: string;
+  degreeLevels?: string[];
+  studyFields?: string[];
+  tuitionFee?: string;
+  scholarshipAvailable?: boolean;
+}
 
 /* ── Country Data ── */
-const countries = [
-  {
-    id: 'de', name: 'Germany', flag: '🇩🇪', color: '#3B82F6',
-    img: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=700&q=80',
-    tagline: 'Engineering & Research Powerhouse',
-    tag: 'Most Popular',
-    stats: { unis: '400+', avgCost: '€0–500/sem', acceptance: '65%', intl: '350k+' },
-    highlights: ['Free tuition at public universities', 'Strong STEM ecosystem', 'Post-study work visa up to 18 months', 'Central European location'],
-    topUnis: [
-      { name: 'TU Munich', rank: '#50 QS', field: 'Engineering' },
-      { name: 'LMU Munich', rank: '#59 QS', field: 'Research' },
-      { name: 'Heidelberg', rank: '#87 QS', field: 'Sciences' },
-      { name: 'RWTH Aachen', rank: '#165 QS', field: 'Technology' },
-    ],
-    programs: ['MSc Engineering', 'MBA', 'BSc Computer Science', 'PhD Research'],
-    salary: '€45,000+',
-  },
-  {
-    id: 'nl', name: 'Netherlands', flag: '🇳🇱', color: '#FF6B00',
-    img: '/assets/dutch-flag.jpg',
-    tagline: 'Innovation & Global Business Hub',
-    tag: 'Top Ranked',
-    stats: { unis: '80+', avgCost: '€2k–12k/yr', acceptance: '70%', intl: '115k+' },
-    highlights: ['English-taught programs', 'Internship-focused curriculum', 'Thriving startup ecosystem', 'High quality of life'],
-    topUnis: [
-      { name: 'TU Delft', rank: '#47 QS', field: 'Engineering' },
-      { name: 'Wageningen', rank: '#61 QS', field: 'Agriculture' },
-      { name: 'Amsterdam', rank: '#72 QS', field: 'Business' },
-      { name: 'Erasmus', rank: '#235 QS', field: 'Economics' },
-    ],
-    programs: ['MSc Data Science', 'MBA', 'BSc Business', 'MSc Architecture'],
-    salary: '€50,000+',
-  },
-  {
-    id: 'fr', name: 'France', flag: '🇫🇷', color: '#FF3B3B',
-    img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=700&q=80',
-    tagline: 'Arts, Business & Grande Écoles',
-    tag: 'Cultural Hub',
-    stats: { unis: '3,500+', avgCost: '€2,770/yr', acceptance: '60%', intl: '370k+' },
-    highlights: ['Affordable public university fees', 'Prestigious Grande Écoles', 'Fashion, arts & culinary programs', 'Schengen area access'],
-    topUnis: [
-      { name: 'HEC Paris', rank: '#1 Europe', field: 'Business' },
-      { name: 'Sciences Po', rank: '#243 QS', field: 'Political Sci' },
-      { name: 'Sorbonne', rank: '#83 QS', field: 'Humanities' },
-      { name: 'École Polytechnique', rank: '#61 QS', field: 'Science' },
-    ],
-    programs: ['MBA', 'MSc Finance', 'BA Arts', 'Grande École program'],
-    salary: '€42,000+',
-  },
-  {
-    id: 'se', name: 'Sweden', flag: '🇸🇪', color: '#00C9B0',
-    img: 'https://images.unsplash.com/photo-1509356843151-3e7d96241e11?w=700&q=80',
-    tagline: 'Sustainability & Innovation Leader',
-    tag: 'High Quality',
-    stats: { unis: '50+', avgCost: '€9k–18k/yr', acceptance: '68%', intl: '38k+' },
-    highlights: ['World-leading research output', 'Strong sustainability focus', 'Work-life balance culture', 'Nordic innovation ecosystem'],
-    topUnis: [
-      { name: 'KTH Royal Institute', rank: '#98 QS', field: 'Technology' },
-      { name: 'Uppsala University', rank: '#163 QS', field: 'Research' },
-      { name: 'Stockholm Uni', rank: '#197 QS', field: 'Sciences' },
-      { name: 'Chalmers', rank: '#241 QS', field: 'Engineering' },
-    ],
-    programs: ['MSc Sustainability', 'MSc Engineering', 'MBA', 'BSc Technology'],
-    salary: '€48,000+',
-  },
-  {
-    id: 'es', name: 'Spain', flag: '🇪🇸', color: '#FFB800',
-    img: 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=700&q=80',
-    tagline: 'Business, Tourism & Mediterranean Life',
-    tag: 'Affordable',
-    stats: { unis: '80+', avgCost: '€700–2,500/yr', acceptance: '72%', intl: '75k+' },
-    highlights: ['Very affordable living costs', 'Top-ranked business schools', 'Warm Mediterranean culture', 'EU work rights post-study'],
-    topUnis: [
-      { name: 'IE Business School', rank: '#1 Spain', field: 'Business' },
-      { name: 'Univ. Barcelona', rank: '#171 QS', field: 'Humanities' },
-      { name: 'Univ. Madrid', rank: '#224 QS', field: 'Sciences' },
-      { name: 'IESE Business', rank: 'Top MBA', field: 'MBA' },
-    ],
-    programs: ['MBA', 'MSc Tourism', 'BA Business', 'MSc Marketing'],
-    salary: '€35,000+',
-  },
-  {
-    id: 'pl', name: 'Poland', flag: '🇵🇱', color: '#A855F7',
-    img: 'https://images.unsplash.com/photo-1519197924294-4ba991a11128?w=700&q=80',
-    tagline: 'Emerging Tech & Medical Education',
-    tag: 'Rising Star',
-    stats: { unis: '130+', avgCost: '€2k–4k/yr', acceptance: '75%', intl: '86k+' },
-    highlights: ['Lowest tuition in EU', 'Excellent medical programs', 'Fast-growing tech sector', 'EU membership benefits'],
-    topUnis: [
-      { name: 'Warsaw University', rank: '#308 QS', field: 'Sciences' },
-      { name: 'Jagiellonian Uni', rank: '#321 QS', field: 'Medicine' },
-      { name: 'AGH University', rank: 'Top Tech', field: 'Engineering' },
-      { name: 'Wrocław Uni Tech', rank: 'Top 500', field: 'Technology' },
-    ],
-    programs: ['MBBS', 'MSc Engineering', 'BSc Computer Sci', 'MBA'],
-    salary: '€30,000+',
-  },
-];
+// Static countries array removed - data now generated dynamically from DB
 
 /* ── Program Levels ── */
 const programLevels = [
@@ -210,16 +130,97 @@ function ScholarshipBar({ name, amount, coverage, color, country, type, index }:
 }
 
 export default function OverseasPage() {
-  const [activeCountry, setActiveCountry] = useState('de');
+  const [activeCountry, setActiveCountry] = useState('');
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [hoveredService, setHoveredService] = useState<string | null>(null);
   const [hoveredLevel, setHoveredLevel] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  /* ── DB universities state ── */
+  const [dbUniversities, setDbUniversities] = useState<UniversityDB[]>([]);
+  const [uniLoading, setUniLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/admin/universities')
+      .then(r => r.json())
+      .then(data => {
+        const unis = data.universities || [];
+        setDbUniversities(unis);
+        if (unis.length > 0 && !activeCountry) {
+          const uniqueCountries = Array.from(new Set(unis.map((u: any) => u.country).filter(Boolean))) as string[];
+          if (uniqueCountries.length > 0) {
+            setActiveCountry(uniqueCountries[0].toLowerCase().replace(/\s+/g, '-'));
+          }
+        }
+      })
+      .catch(() => setDbUniversities([]))
+      .finally(() => setUniLoading(false));
+  }, []);
+
+  /* ── Generate dynamic countries from DB ── */
+  const dynamicCountries = Array.from(new Set(dbUniversities.map(u => u.country).filter(Boolean))).map((countryName, idx) => {
+    const unisForCountry = dbUniversities.filter(u => u.country === countryName);
+    const uniWithImage = unisForCountry.find(u => u.image);
+    const uniWithFee = unisForCountry.find(u => u.tuitionFee);
+    
+    const colors = ['#3B82F6', '#FF6B00', '#FF3B3B', '#00C9B0', '#FFB800', '#A855F7'];
+    const color = colors[idx % colors.length];
+
+    const allFields = Array.from(new Set(unisForCountry.flatMap(u => u.studyFields || [])));
+    const allDegrees = Array.from(new Set(unisForCountry.flatMap(u => u.degreeLevels || [])));
+
+    return {
+      id: countryName.toLowerCase().replace(/\s+/g, '-'),
+      name: countryName,
+      flag: '🌍', // fallback flag
+      color: color,
+      img: uniWithImage?.image || '', // admin added image
+      tagline: 'Explore Universities',
+      tag: '',
+      stats: {
+        unis: unisForCountry.length.toString(),
+        avgCost: uniWithFee?.tuitionFee || '--',
+        acceptance: '--',
+        intl: '--',
+      },
+      highlights: allFields.length > 0 ? allFields.slice(0, 4) : ['Quality Education', 'Global Network'],
+      topUnis: unisForCountry.slice(0, 4).map(u => ({ name: u.name, rank: u.ranking || '', field: u.type || '' })),
+      programs: allDegrees.length > 0 ? allDegrees : ['Bachelors', 'Masters'],
+      salary: '--'
+    };
+  });
+
+  /* Universities for the active country (matched case-insensitively) */
+  const activeCountryName = dynamicCountries.find(c => c.id === activeCountry)?.name ?? '';
+  const countryUniversities = dbUniversities.filter(
+    u => u.country.toLowerCase() === activeCountryName.toLowerCase()
+  );
+
+  /* Dynamic country image from the first university in that country that has an image, fallback to default */
+  const activeCountryUniWithImage = countryUniversities.find(u => u.image);
+  const countryImg = activeCountryUniWithImage?.image || dynamicCountries.find(c => c.id === activeCountry)?.img;
+
+  /* Dynamic university count and tuition cost */
+  const active = dynamicCountries.find(c => c.id === activeCountry) || dynamicCountries[0];
+  const universityCount = countryUniversities.length > 0 ? `${countryUniversities.length}` : active?.stats?.unis;
+  const activeCountryUniWithFee = countryUniversities.find(u => u.tuitionFee);
+  const avgCostVal = activeCountryUniWithFee?.tuitionFee || active?.stats?.avgCost;
+
+  /* Filtered universities for the search section */
+  const filteredUniversities = dbUniversities.filter(u => {
+    if (!searchQuery.trim()) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      u.name.toLowerCase().includes(q) ||
+      u.country.toLowerCase().includes(q) ||
+      (u.city && u.city.toLowerCase().includes(q)) ||
+      (u.availableCourses && u.availableCourses.toLowerCase().includes(q))
+    );
+  });
 
   const heroRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
   const timelineInView = useInView(timelineRef, { once: true, margin: '-60px' });
-
-  const active = countries.find(c => c.id === activeCountry)!;
 
   return (
     <main className="bg-white text-gray-900">
@@ -295,9 +296,9 @@ export default function OverseasPage() {
                 </motion.button>
               </Link>
               <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-                onClick={() => document.getElementById('country-explorer')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('universities')?.scrollIntoView({ behavior: 'smooth' })}
                 className="px-8 py-4 rounded-full font-semibold text-white/80 border border-white/20 hover:border-blue-500/40 hover:text-white transition-all">
-                Browse Destinations
+                Browse Universities
               </motion.button>
             </div>
           </motion.div>
@@ -327,7 +328,7 @@ export default function OverseasPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 pt-6">
             <p className="text-white/30 text-xs uppercase tracking-widest mb-4 text-center">Choose your destination</p>
             <div className="flex gap-3 justify-center flex-wrap">
-              {countries.map((c, i) => (
+              {dynamicCountries.map((c, i) => (
                 <motion.button key={c.id}
                   initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 + i * 0.08 }}
@@ -355,6 +356,118 @@ export default function OverseasPage() {
         </div>
       </section>
 
+      {/* ── Browse All Universities (DB) ── */}
+      <section id="universities" className="py-24 relative bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="text-center mb-10">
+            <span className="badge badge-blue mb-4">Our Network</span>
+            <h2 className="font-display font-bold text-4xl md:text-5xl text-gray-900 mb-3">
+              Browse <span className="text-gradient">Universities</span>
+            </h2>
+            <p className="text-gray-500 max-w-lg mx-auto">
+              Explore all universities added by our team — click any card for full details
+            </p>
+          </motion.div>
+
+          {/* Search Bar */}
+          <div className="max-w-lg mx-auto mb-10">
+            <div className="relative">
+              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Search by name, country, city or program…"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-transparent shadow-sm transition-all"
+              />
+            </div>
+          </div>
+
+          {uniLoading ? (
+            <div className="flex items-center justify-center py-20 gap-3 text-gray-400">
+              <Loader2 size={22} className="animate-spin text-violet-500" />
+              <span className="text-sm font-medium">Loading universities…</span>
+            </div>
+          ) : filteredUniversities.length === 0 ? (
+            <div className="text-center py-20">
+              <GraduationCap size={48} className="mx-auto mb-4 text-gray-200" />
+              <p className="text-gray-400 text-base font-medium">
+                {searchQuery ? `No universities found for "${searchQuery}"` : 'No universities added yet.'}
+              </p>
+              <p className="text-gray-300 text-sm mt-1">
+                {searchQuery ? 'Try a different search term.' : 'Admin can add universities via the dashboard.'}
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+              {filteredUniversities.map((uni, i) => {
+                const gradients = [
+                  'from-violet-500 to-indigo-600', 'from-blue-500 to-cyan-600',
+                  'from-rose-500 to-pink-600', 'from-amber-500 to-orange-600',
+                  'from-emerald-500 to-teal-600', 'from-purple-500 to-violet-600',
+                ];
+                return (
+                  <motion.div key={uni._id}
+                    initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }} transition={{ delay: (i % 8) * 0.06 }}>
+                    <Link
+                      href={`/universities/${uni._id}`}
+                      className="group relative flex flex-col justify-end h-64 rounded-[24px] overflow-hidden border border-gray-200/30 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 bg-slate-950 cursor-pointer"
+                    >
+                      {/* Background */}
+                      {uni.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={uni.image}
+                          alt={uni.name}
+                          className="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:opacity-90 group-hover:scale-110 transition-all duration-500"
+                          onError={e => { e.currentTarget.style.display = 'none'; }}
+                        />
+                      ) : (
+                        <div className={`absolute inset-0 bg-gradient-to-br ${gradients[i % gradients.length]} opacity-80`} />
+                      )}
+                      {/* Dark gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent z-10" />
+                      {/* Ranking badge */}
+                      {uni.ranking && (
+                        <div className="absolute top-3 right-3 z-20 flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-400/90 text-slate-900 text-[10px] font-bold shadow">
+                          <Award size={10} /> #{uni.ranking}
+                        </div>
+                      )}
+                      {/* Text */}
+                      <div className="relative z-20 p-4 flex flex-col items-center text-center justify-end w-full">
+                        <h3 className="font-display font-bold text-white text-sm leading-tight mb-1 drop-shadow-md line-clamp-2 px-1">
+                          {uni.name}
+                        </h3>
+                        <span className="text-[10px] font-semibold text-sky-400 uppercase tracking-wider drop-shadow-sm">
+                          {uni.city ? `${uni.city}, ` : ''}{uni.country}
+                        </span>
+                        {uni.degreeLevels && uni.degreeLevels.length > 0 && (
+                          <div className="flex flex-wrap gap-1 justify-center mt-2">
+                            {uni.degreeLevels.slice(0, 2).map(lvl => (
+                              <span key={lvl} className="text-[9px] px-2 py-0.5 rounded-full bg-white/15 text-white/80 font-medium">{lvl}</span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Show count */}
+          {!uniLoading && filteredUniversities.length > 0 && (
+            <p className="text-center text-xs text-gray-400 mt-8">
+              Showing {filteredUniversities.length} {filteredUniversities.length === 1 ? 'university' : 'universities'}
+              {searchQuery ? ` matching "${searchQuery}"` : ' in our network'}
+            </p>
+          )}
+        </div>
+      </section>
+
       {/* ── Country Explorer ── */}
       <section id="country-explorer" className="py-24 relative bg-[#F8FAFF]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -369,7 +482,7 @@ export default function OverseasPage() {
 
           {/* Tab buttons */}
           <div className="flex flex-wrap gap-2 justify-center mb-10">
-            {countries.map(c => (
+            {dynamicCountries.map(c => (
               <motion.button key={c.id}
                 whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}
                 onClick={() => setActiveCountry(c.id)}
@@ -390,7 +503,7 @@ export default function OverseasPage() {
             ))}
           </div>
 
-          {/* Detail panel */}
+          {active && (
           <AnimatePresence mode="wait">
             <motion.div key={activeCountry}
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
@@ -401,12 +514,14 @@ export default function OverseasPage() {
               <div className="relative rounded-3xl overflow-hidden min-h-[380px]"
                 style={{ border: `1px solid ${active.color}40` }}>
                 {/* Background image using img tag for reliable local file rendering */}
-                <img
-                  src={active.img}
-                  alt={active.name}
-                  aria-hidden="true"
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
+                {countryImg && (
+                  <img
+                    src={countryImg}
+                    alt={active.name}
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                )}
                 {/* Only a subtle dark gradient at bottom for text readability */}
                 <div className="absolute inset-0"
                   style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.65) 100%)' }} />
@@ -414,25 +529,25 @@ export default function OverseasPage() {
                   style={{ background: `linear-gradient(90deg, transparent, ${active.color}, transparent)` }} />
 
                 <div className="relative p-8 h-full flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="text-4xl">{active.flag}</span>
-                      <div>
-                        <h3 className="font-display font-bold text-2xl text-white">{active.name}</h3>
-                        <p className="text-white/70 text-sm">{active.tagline}</p>
-                      </div>
-                    </div>
-                    <span className="text-xs px-2.5 py-1 rounded-full font-bold tracking-wider uppercase"
-                      style={{ background: `${active.color}30`, color: 'white', border: `1px solid ${active.color}60` }}>
-                      {active.tag}
-                    </span>
-                  </div>
+                   <div>
+                     <div className="flex items-center gap-3 mb-3">
+                       <span className="text-4xl">{active.flag}</span>
+                       <div>
+                         <h3 className="font-display font-bold text-2xl text-white">{active.name}</h3>
+                         <p className="text-white/70 text-sm">{active.tagline}</p>
+                       </div>
+                     </div>
+                     <span className="text-xs px-2.5 py-1 rounded-full font-bold tracking-wider uppercase"
+                       style={{ background: `${active.color}30`, color: 'white', border: `1px solid ${active.color}60` }}>
+                       {active.tag}
+                     </span>
+                   </div>
 
                   {/* Key stats */}
                   <div className="grid grid-cols-2 gap-3 mt-6">
                     {[
-                      { label: 'Universities', value: active.stats.unis, icon: Building2 },
-                      { label: 'Avg. Cost', value: active.stats.avgCost, icon: DollarSign },
+                      { label: 'Universities', value: universityCount, icon: Building2 },
+                      { label: 'Avg. Cost', value: avgCostVal, icon: DollarSign },
                       { label: 'Acceptance', value: active.stats.acceptance, icon: CheckCircle },
                       { label: 'Intl Students', value: active.stats.intl, icon: Users },
                     ].map(({ label, value, icon: Icon }) => (
@@ -458,32 +573,64 @@ export default function OverseasPage() {
 
               {/* Right — universities + highlights */}
               <div className="flex flex-col gap-4">
-                {/* Top Universities */}
+                {/* Universities in this country from DB */}
                 <div className="rounded-3xl p-6"
                   style={{ background: '#fff', border: '1px solid rgb(229,231,235)' }}>
                   <h4 className="font-display font-bold text-gray-900 mb-4 flex items-center gap-2">
                     <Landmark size={16} style={{ color: active.color }} /> Top Universities
                   </h4>
-                  <div className="space-y-2.5">
-                    {active.topUnis.map((uni, i) => (
-                      <motion.div key={uni.name}
-                        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.08 }}
-                        className="flex items-center justify-between rounded-xl px-4 py-3 group cursor-default"
-                        style={{ background: '#F8FAFC', border: '1px solid rgb(229,231,235)' }}>
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold"
-                            style={{ background: `${active.color}18`, color: active.color }}>{i + 1}</div>
-                          <div>
-                            <div className="text-gray-900 text-sm font-semibold">{uni.name}</div>
-                            <div className="text-gray-400 text-xs">{uni.field}</div>
-                          </div>
-                        </div>
-                        <span className="text-xs font-semibold px-2 py-1 rounded-full"
-                          style={{ background: `${active.color}10`, color: active.color }}>{uni.rank}</span>
-                      </motion.div>
-                    ))}
-                  </div>
+
+                  {uniLoading ? (
+                    <div className="flex items-center justify-center py-8 gap-3 text-gray-400">
+                      <Loader2 size={18} className="animate-spin" />
+                      <span className="text-sm">Loading universities…</span>
+                    </div>
+                  ) : countryUniversities.length > 0 ? (
+                    <div className="space-y-2.5">
+                      {countryUniversities.map((uni, i) => {
+                        const displayRank = uni.ranking 
+                          ? (uni.ranking.toLowerCase().includes('qs') 
+                              ? (uni.ranking.startsWith('#') ? uni.ranking : `#${uni.ranking}`) 
+                              : `#${uni.ranking.startsWith('#') ? uni.ranking.substring(1) : uni.ranking} QS`)
+                          : null;
+
+                        return (
+                          <motion.div key={uni._id}
+                            initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.08 }}>
+                            <Link href={`/universities/${uni._id}`}
+                              className="flex items-center justify-between rounded-xl px-4 py-3 group hover:shadow-md transition-all cursor-pointer block"
+                              style={{ background: '#F8FAFC', border: '1px solid rgb(229,231,235)' }}>
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
+                                  style={{ background: `${active.color}18`, color: active.color }}>
+                                  {i + 1}
+                                </div>
+                                <div>
+                                  <div className="text-gray-900 text-sm font-semibold group-hover:text-violet-600 transition-colors">{uni.name}</div>
+                                  <div className="text-gray-400 text-xs">
+                                    {uni.studyFields && uni.studyFields.length > 0 ? uni.studyFields[0] : (uni.type || 'General')}
+                                  </div>
+                                </div>
+                              </div>
+                              {displayRank && (
+                                <span className="text-xs font-semibold px-2 py-1 rounded-full flex-shrink-0"
+                                  style={{ background: `${active.color}10`, color: active.color }}>
+                                  {displayRank}
+                                </span>
+                              )}
+                            </Link>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <GraduationCap size={32} className="mx-auto mb-3 text-gray-200" />
+                      <p className="text-gray-400 text-sm">No universities added for {activeCountryName} yet.</p>
+                      <p className="text-gray-300 text-xs mt-1">Admin can add universities via the dashboard.</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Highlights */}
@@ -515,6 +662,7 @@ export default function OverseasPage() {
               </div>
             </motion.div>
           </AnimatePresence>
+          )}
         </div>
       </section>
 
@@ -756,12 +904,7 @@ export default function OverseasPage() {
                   Book Free Consultation
                 </motion.button>
               </Link>
-              <Link href="/recruitment">
-                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                  className="px-9 py-4 rounded-full font-semibold text-white/70 border border-white/10 hover:border-primary/40 hover:text-white transition-all">
-                  Explore Recruitment
-                </motion.button>
-              </Link>
+
             </div>
 
             {/* Trust badges */}

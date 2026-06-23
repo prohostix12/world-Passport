@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState, useCallback, useRef } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   Plus, Trash2, Loader2, X, LayoutDashboard, GraduationCap,
@@ -56,13 +57,31 @@ function ToastContainer({ toasts }: { toasts: ToastMsg[] }) {
 
 /* ── Types ── */
 interface ContactEntry { _id: string; name: string; email: string; phone?: string; subject?: string; message: string; createdAt: string; }
-interface UniversityEntry { _id: string; name: string; country: string; city?: string; website?: string; ranking?: string; image?: string; description?: string; createdAt: string; }
+interface UniversityEntry { 
+  _id: string; name: string; image?: string; country: string; city: string; type: string;
+  description: string; establishedYear?: string; campusLocation?: string; website?: string; ranking?: string;
+  availableCourses: string; degreeLevels: string[]; studyFields: string[]; intakeMonths?: string;
+  applicationDeadline?: string; minAcademicRequirement?: string; englishRequirement?: string;
+  tuitionFee?: string; applicationFee?: string; scholarshipAvailable: boolean; scholarshipDetails?: string;
+  internationalStudentsAccepted: boolean; accommodationAvailable: boolean; accommodationDetails?: string;
+  universityImages: string[]; campusVideoUrl?: string; emailAddress?: string; phoneNumber?: string;
+  address?: string; featuredUniversity: boolean; activeStatus: boolean; createdAt: string;
+}
 interface CourseEntry { _id: string; title: string; university: string; country: string; level: string; duration?: string; tuitionFee?: string; intake?: string; description?: string; createdAt: string; }
 interface PartnerEntry { _id: string; organizationName: string; contactPerson: string; email: string; phone: string; country: string; interest: string; message?: string; status: 'Pending' | 'Approved' | 'Rejected'; createdAt: string; }
 
 type Tab = 'dashboard' | 'universities' | 'courses' | 'contacts' | 'partners';
 
-const EMPTY_UNI = { name: '', country: '', city: '', website: '', ranking: '', image: '', description: '' };
+const EMPTY_UNI = { 
+  name: '', image: '', country: '', city: '', type: 'Public', description: '',
+  establishedYear: '', campusLocation: '', website: '', ranking: '',
+  availableCourses: '', degreeLevels: [] as string[], studyFields: [] as string[],
+  intakeMonths: '', applicationDeadline: '', minAcademicRequirement: '', englishRequirement: '',
+  tuitionFee: '', applicationFee: '', scholarshipAvailable: false, scholarshipDetails: '',
+  internationalStudentsAccepted: false, accommodationAvailable: false, accommodationDetails: '',
+  universityImages: [] as string[], campusVideoUrl: '', emailAddress: '', phoneNumber: '',
+  address: '', featuredUniversity: false, activeStatus: true
+};
 const EMPTY_COURSE = { title: '', university: '', country: '', level: "Master's", duration: '', tuitionFee: '', intake: '', description: '' };
 
 function isToday(d: string) {
@@ -78,7 +97,7 @@ function Modal({ title, onClose, children }: { title: string; onClose: () => voi
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg p-7 z-10 max-h-[90vh] overflow-y-auto">
+      <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl p-7 z-10 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-bold text-gray-900">{title}</h3>
           <button onClick={onClose} className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors">
@@ -110,6 +129,13 @@ function StatCard({ icon, label, value, color, onClick }: { icon: React.ReactNod
 }
 
 /* ── University Form ── */
+const Section = ({ title, children }: { title: string, children: React.ReactNode }) => (
+  <div className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 space-y-4 mb-4">
+    <h4 className="text-sm font-bold text-gray-800">{title}</h4>
+    {children}
+  </div>
+);
+
 function UniversityForm({
   form, setForm, onSubmit, onClose, saving, isEdit,
 }: {
@@ -120,50 +146,38 @@ function UniversityForm({
   saving: boolean;
   isEdit: boolean;
 }) {
-  const upd = (k: keyof typeof EMPTY_UNI) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm(p => ({ ...p, [k]: e.target.value }));
+  const upd = (k: keyof typeof EMPTY_UNI) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    setForm(p => ({ ...p, [k]: e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value }));
 
-  const [dragActive, setDragActive] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const toggleArray = (k: 'degreeLevels' | 'studyFields', val: string) => {
+    setForm(p => {
+      const arr = p[k] as string[];
+      if (arr.includes(val)) return { ...p, [k]: arr.filter(x => x !== val) };
+      return { ...p, [k]: [...arr, val] };
+    });
+  };
 
-  const processFile = (file: File) => {
-    if (!file.type.startsWith('image/')) {
-      alert('Please upload an image file.');
-      return;
-    }
-
+  const processFile = (file: File, isMultiple: boolean = false) => {
+    if (!file.type.startsWith('image/')) return;
     const reader = new FileReader();
     reader.onload = (event) => {
       const img = new window.Image();
       img.onload = () => {
-        // Compress the image using canvas
         const canvas = document.createElement('canvas');
-        let width = img.width;
-        let height = img.height;
-
-        const MAX_WIDTH = 1200;
-        const MAX_HEIGHT = 800;
-
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height = Math.round((height * MAX_WIDTH) / width);
-            width = MAX_WIDTH;
-          }
-        } else {
-          if (height > MAX_HEIGHT) {
-            width = Math.round((width * MAX_HEIGHT) / height);
-            height = MAX_HEIGHT;
-          }
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-
+        let width = img.width, height = img.height;
+        const MAX = 1200;
+        if (width > height && width > MAX) { height = Math.round((height * MAX) / width); width = MAX; }
+        else if (height > MAX) { width = Math.round((width * MAX) / height); height = MAX; }
+        canvas.width = width; canvas.height = height;
         const ctx = canvas.getContext('2d');
         if (ctx) {
           ctx.drawImage(img, 0, 0, width, height);
           const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-          setForm(p => ({ ...p, image: dataUrl }));
+          if (isMultiple) {
+            setForm(p => ({ ...p, universityImages: [...p.universityImages, dataUrl] }));
+          } else {
+            setForm(p => ({ ...p, image: dataUrl }));
+          }
         }
       };
       img.src = event.target?.result as string;
@@ -171,122 +185,116 @@ function UniversityForm({
     reader.readAsDataURL(file);
   };
 
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      processFile(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      processFile(e.target.files[0]);
-    }
-  };
-
-  const handleClearImage = () => {
-    setForm(p => ({ ...p, image: '' }));
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
   return (
     <form onSubmit={onSubmit} className="space-y-4">
-      <div>
-        <label className={labelCls}>University Name *</label>
-        <input required className={inputCls} placeholder="e.g. University of Amsterdam" value={form.name} onChange={upd('name')} />
-      </div>
-      <div className="grid grid-cols-2 gap-3">
+      <Section title="Basic Information">
         <div>
-          <label className={labelCls}>Country *</label>
-          <input required className={inputCls} placeholder="Netherlands" value={form.country} onChange={upd('country')} />
+          <label className={labelCls}>University Name *</label>
+          <input required className={inputCls} value={form.name} onChange={upd('name')} />
         </div>
-        <div>
-          <label className={labelCls}>City</label>
-          <input className={inputCls} placeholder="Amsterdam" value={form.city} onChange={upd('city')} />
+        <div className="grid grid-cols-2 gap-3">
+          <div><label className={labelCls}>Country *</label><input required className={inputCls} value={form.country} onChange={upd('country')} /></div>
+          <div><label className={labelCls}>City *</label><input required className={inputCls} value={form.city} onChange={upd('city')} /></div>
         </div>
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className={labelCls}>QS Ranking</label>
-          <input className={inputCls} placeholder="#72 QS" value={form.ranking} onChange={upd('ranking')} />
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className={labelCls}>University Type *</label>
+            <select required className={inputCls} value={form.type} onChange={upd('type')}>
+              <option value="Public">Public</option><option value="Private">Private</option>
+              <option value="Community College">Community College</option><option value="Language School">Language School</option>
+            </select>
+          </div>
+          <div><label className={labelCls}>Established Year</label><input className={inputCls} value={form.establishedYear} onChange={upd('establishedYear')} /></div>
         </div>
-        <div>
-          <label className={labelCls}>Website</label>
-          <input className={inputCls} placeholder="https://uva.nl" value={form.website} onChange={upd('website')} />
-        </div>
-      </div>
-      <div>
-        <label className={labelCls}>University Image</label>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={handleFileInput}
-          id="uni-image-upload"
-        />
+      </Section>
 
-        {form.image ? (
-          <div className="relative group rounded-2xl overflow-hidden border border-gray-200 h-44 shadow-inner bg-gray-50 flex items-center justify-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={form.image} alt="Preview" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <button
-                type="button"
-                onClick={handleClearImage}
-                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-xs shadow-md transition-all flex items-center gap-1.5"
-              >
-                <Trash2 size={12} /> Remove Image
-              </button>
-            </div>
+      <Section title="Details">
+        <div><label className={labelCls}>Description *</label><textarea required rows={3} className={inputCls} value={form.description} onChange={upd('description')} /></div>
+        <div className="grid grid-cols-2 gap-3">
+          <div><label className={labelCls}>Campus Location</label><input className={inputCls} value={form.campusLocation} onChange={upd('campusLocation')} /></div>
+          <div><label className={labelCls}>Website URL</label><input className={inputCls} value={form.website} onChange={upd('website')} /></div>
+        </div>
+        <div><label className={labelCls}>Ranking</label><input className={inputCls} value={form.ranking} onChange={upd('ranking')} /></div>
+      </Section>
+
+      <Section title="Academic Information">
+        <div><label className={labelCls}>Available Courses/Programs *</label><input required className={inputCls} placeholder="e.g. BSc Computer Science, MBA..." value={form.availableCourses} onChange={upd('availableCourses')} /></div>
+        <div>
+          <label className={labelCls}>Degree Levels</label>
+          <div className="flex flex-wrap gap-3">
+            {['Diploma', "Bachelor's", "Master's", 'PhD'].map(lvl => (
+              <label key={lvl} className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.degreeLevels.includes(lvl)} onChange={() => toggleArray('degreeLevels', lvl)} /> {lvl}</label>
+            ))}
           </div>
-        ) : (
-          <div
-            onDragEnter={handleDrag}
-            onDragOver={handleDrag}
-            onDragLeave={handleDrag}
-            onDrop={handleDrop}
-            onClick={() => fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-2 select-none ${dragActive
-                ? 'border-violet-500 bg-violet-50/50 text-violet-600 scale-[0.99]'
-                : 'border-gray-200 hover:border-violet-400 hover:bg-gray-50/50 text-gray-500'
-              }`}
-          >
-            <div className={`p-3 rounded-full ${dragActive ? 'bg-violet-100' : 'bg-gray-100'} transition-colors`}>
-              <Upload size={20} className={dragActive ? 'text-violet-600' : 'text-gray-400'} />
-            </div>
-            <div>
-              <p className="text-xs font-semibold">Click to upload or drag & drop</p>
-              <p className="text-[10px] text-gray-400 mt-1">PNG, JPG, WEBP, or GIF (auto-resized & optimized)</p>
-            </div>
+        </div>
+        <div>
+          <label className={labelCls}>Study Fields</label>
+          <div className="flex flex-wrap gap-3">
+            {['Engineering', 'Business', 'IT', 'Medicine', 'Arts', 'Science', 'Others'].map(f => (
+              <label key={f} className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.studyFields.includes(f)} onChange={() => toggleArray('studyFields', f)} /> {f}</label>
+            ))}
           </div>
-        )}
-      </div>
-      <div>
-        <label className={labelCls}>Description</label>
-        <textarea rows={3} className={`${inputCls} resize-none`} placeholder="Short description..." value={form.description} onChange={upd('description')} />
-      </div>
+        </div>
+      </Section>
+
+      <Section title="Admission Information">
+        <div className="grid grid-cols-2 gap-3">
+          <div><label className={labelCls}>Intake Months</label><input className={inputCls} value={form.intakeMonths} onChange={upd('intakeMonths')} /></div>
+          <div><label className={labelCls}>Application Deadline</label><input className={inputCls} value={form.applicationDeadline} onChange={upd('applicationDeadline')} /></div>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div><label className={labelCls}>Min Academic Req</label><input className={inputCls} value={form.minAcademicRequirement} onChange={upd('minAcademicRequirement')} /></div>
+          <div><label className={labelCls}>English Req (IELTS/TOEFL)</label><input className={inputCls} value={form.englishRequirement} onChange={upd('englishRequirement')} /></div>
+        </div>
+      </Section>
+
+      <Section title="Financial & Student Info">
+        <div className="grid grid-cols-2 gap-3">
+          <div><label className={labelCls}>Tuition Fee (Per Year)</label><input className={inputCls} value={form.tuitionFee} onChange={upd('tuitionFee')} /></div>
+          <div><label className={labelCls}>Application Fee</label><input className={inputCls} value={form.applicationFee} onChange={upd('applicationFee')} /></div>
+        </div>
+        <div className="flex items-center gap-4 mt-2">
+          <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={form.scholarshipAvailable} onChange={upd('scholarshipAvailable')} /> Scholarship Available</label>
+          <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={form.internationalStudentsAccepted} onChange={upd('internationalStudentsAccepted')} /> Int. Students Accepted</label>
+          <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={form.accommodationAvailable} onChange={upd('accommodationAvailable')} /> Accommodation Available</label>
+        </div>
+        <div><label className={labelCls}>Scholarship Details</label><input className={inputCls} value={form.scholarshipDetails} onChange={upd('scholarshipDetails')} /></div>
+        <div><label className={labelCls}>Accommodation Details</label><input className={inputCls} value={form.accommodationDetails} onChange={upd('accommodationDetails')} /></div>
+      </Section>
+
+      <Section title="Media">
+        <div>
+          <label className={labelCls}>Main Image</label>
+          <input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && processFile(e.target.files[0])} className="text-sm mb-2" />
+          {form.image && <img src={form.image} alt="Main" className="h-20 w-20 object-cover rounded mb-2 block" style={{ maxWidth: '120px' }} />}
+        </div>
+        <div>
+          <label className={labelCls}>Gallery Images</label>
+          <input type="file" accept="image/*" multiple onChange={(e) => { Array.from(e.target.files || []).forEach(f => processFile(f, true)) }} className="text-sm mb-2" />
+          <div className="flex gap-2 flex-wrap">
+            {form.universityImages.map((img, i) => (
+              <img key={i} src={img} alt="Gallery" className="h-16 rounded cursor-pointer hover:opacity-50" onClick={() => setForm(p => ({ ...p, universityImages: p.universityImages.filter((_, idx) => idx !== i) }))} title="Click to remove" />
+            ))}
+          </div>
+        </div>
+        <div><label className={labelCls}>Campus Video URL</label><input className={inputCls} value={form.campusVideoUrl} onChange={upd('campusVideoUrl')} /></div>
+      </Section>
+
+      <Section title="Contact Information & Status">
+        <div className="grid grid-cols-2 gap-3">
+          <div><label className={labelCls}>Email Address</label><input type="email" className={inputCls} value={form.emailAddress} onChange={upd('emailAddress')} /></div>
+          <div><label className={labelCls}>Phone Number</label><input className={inputCls} value={form.phoneNumber} onChange={upd('phoneNumber')} /></div>
+        </div>
+        <div><label className={labelCls}>Address</label><input className={inputCls} value={form.address} onChange={upd('address')} /></div>
+        <div className="flex items-center gap-4 mt-2">
+          <label className="flex items-center gap-2 text-sm font-bold text-violet-600"><input type="checkbox" checked={form.featuredUniversity} onChange={upd('featuredUniversity')} /> Featured University</label>
+          <label className="flex items-center gap-2 text-sm font-bold text-green-600"><input type="checkbox" checked={form.activeStatus} onChange={upd('activeStatus')} /> Active / Visible</label>
+        </div>
+      </Section>
+
       <div className="flex gap-3 pt-2">
-        <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-xl text-sm font-medium text-gray-600 border border-gray-200 hover:bg-gray-50 transition-all">
-          Cancel
-        </button>
-        <button type="submit" disabled={saving}
-          className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-white flex items-center justify-center gap-2 disabled:opacity-60 transition-all hover:opacity-90"
-          style={{ background: 'linear-gradient(135deg,#6D28D9,#7C3AED)' }}>
+        <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-xl text-sm font-medium text-gray-600 border border-gray-200 hover:bg-gray-50 transition-all">Cancel</button>
+        <button type="submit" disabled={saving} className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-white flex items-center justify-center gap-2" style={{ background: 'linear-gradient(135deg,#6D28D9,#7C3AED)' }}>
           {saving && <Loader2 size={14} className="animate-spin" />}
           {isEdit ? 'Update University' : 'Save University'}
         </button>
@@ -294,6 +302,7 @@ function UniversityForm({
     </form>
   );
 }
+
 
 /* ── Main ── */
 export default function AdminDashboard() {
@@ -360,7 +369,23 @@ export default function AdminDashboard() {
   /* open edit modal */
   const openEdit = (u: UniversityEntry) => {
     setEditingUni(u);
-    setUniForm({ name: u.name, country: u.country, city: u.city || '', website: u.website || '', ranking: u.ranking || '', image: u.image || '', description: u.description || '' });
+    setUniForm({
+      name: u.name, image: u.image || '', country: u.country, city: u.city || '',
+      type: u.type || 'Public', description: u.description || '',
+      establishedYear: u.establishedYear || '', campusLocation: u.campusLocation || '',
+      website: u.website || '', ranking: u.ranking || '',
+      availableCourses: u.availableCourses || '',
+      degreeLevels: u.degreeLevels || [], studyFields: u.studyFields || [],
+      intakeMonths: u.intakeMonths || '', applicationDeadline: u.applicationDeadline || '',
+      minAcademicRequirement: u.minAcademicRequirement || '', englishRequirement: u.englishRequirement || '',
+      tuitionFee: u.tuitionFee || '', applicationFee: u.applicationFee || '',
+      scholarshipAvailable: u.scholarshipAvailable || false, scholarshipDetails: u.scholarshipDetails || '',
+      internationalStudentsAccepted: u.internationalStudentsAccepted || false,
+      accommodationAvailable: u.accommodationAvailable || false, accommodationDetails: u.accommodationDetails || '',
+      universityImages: u.universityImages || [], campusVideoUrl: u.campusVideoUrl || '',
+      emailAddress: u.emailAddress || '', phoneNumber: u.phoneNumber || '',
+      address: u.address || '', featuredUniversity: u.featuredUniversity || false, activeStatus: u.activeStatus !== undefined ? u.activeStatus : true
+    });
     setUniModal('edit');
   };
 
@@ -655,52 +680,54 @@ export default function AdminDashboard() {
                 : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                     {universities.map(u => (
-                      <div key={u._id} className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all group overflow-hidden">
-                        {/* Image */}
-                        <div className="relative h-36 bg-gradient-to-br from-violet-100 to-indigo-100 overflow-hidden">
-                          {u.image ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={u.image} alt={u.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={e => { e.currentTarget.style.display = 'none'; }} />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center">
-                              <GraduationCap size={40} className="text-violet-300" />
-                            </div>
-                          )}
-                          {/* Action buttons overlay */}
-                          <div className="absolute top-2 right-2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button onClick={() => openEdit(u)} title="Edit"
-                              className="w-8 h-8 rounded-lg bg-white/90 hover:bg-white flex items-center justify-center shadow transition-all text-violet-600">
-                              <Pencil size={13} />
-                            </button>
-                            <button onClick={() => deleteUniversity(u._id)} title="Delete"
-                              className="w-8 h-8 rounded-lg bg-white/90 hover:bg-red-50 flex items-center justify-center shadow transition-all text-red-500">
-                              <Trash2 size={13} />
-                            </button>
-                          </div>
-                          {/* Country badge */}
-                          <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-sm" style={{ background: 'rgba(109,40,217,0.8)' }}>
-                            {u.country}{u.city ? ` · ${u.city}` : ''}
-                          </div>
-                        </div>
-
-                        {/* Body */}
-                        <div className="p-4">
-                          <h3 className="font-bold text-gray-900 text-sm mb-1 line-clamp-2 leading-snug">{u.name}</h3>
-                          <div className="flex items-center gap-3 text-xs text-gray-400 mb-2">
-                            {u.ranking && <span className="flex items-center gap-1">🏅 {u.ranking}</span>}
-                            {u.website && (
-                              <a href={u.website} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline truncate max-w-[140px]">
-                                {u.website.replace(/^https?:\/\//, '')}
-                              </a>
+                      <Link href={`/universities/${u._id}`} className="block" key={u._id}>
+                        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all group overflow-hidden">
+                          {/* Image */}
+                          <div className="relative h-36 bg-gradient-to-br from-violet-100 to-indigo-100 overflow-hidden">
+                            {u.image ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={u.image} alt={u.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center">
+                                <GraduationCap size={40} className="text-violet-300" />
+                              </div>
                             )}
+                            {/* Action buttons overlay */}
+                            <div className="absolute top-2 right-2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); openEdit(u); }} title="Edit"
+                                className="w-8 h-8 rounded-lg bg-white/90 hover:bg-white flex items-center justify-center shadow transition-all text-violet-600">
+                                <Pencil size={13} />
+                              </button>
+                              <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); deleteUniversity(u._id); }} title="Delete"
+                                className="w-8 h-8 rounded-lg bg-white/90 hover:bg-red-50 flex items-center justify-center shadow transition-all text-red-500">
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
+                            {/* Country badge */}
+                            <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-sm" style={{ background: 'rgba(109,40,217,0.8)' }}>
+                              {u.country}{u.city ? ` · ${u.city}` : ''}
+                            </div>
                           </div>
-                          {u.description && <p className="text-xs text-gray-400 line-clamp-2">{u.description}</p>}
-                          <div className="mt-3 pt-3 border-t border-gray-50 flex items-center justify-between">
-                            <span className="text-[10px] text-gray-300">{new Date(u.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
-                            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold" style={{ background: '#F0FDF4', color: '#16A34A' }}>Live on site</span>
+
+                          {/* Body */}
+                          <div className="p-4">
+                            <h3 className="font-bold text-gray-900 text-sm mb-1 line-clamp-2 leading-snug">{u.name}</h3>
+                            <div className="flex items-center gap-3 text-xs text-gray-400 mb-2">
+                              {u.ranking && <span className="flex items-center gap-1">🏅 {u.ranking}</span>}
+                              {u.website && (
+                                <a href={u.website} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline truncate max-w-[140px]">
+                                  {u.website.replace(/^https?:\/\//, '')}
+                                </a>
+                              )}
+                            </div>
+                            {u.description && <p className="text-xs text-gray-400 line-clamp-2">{u.description}</p>}
+                            <div className="mt-3 pt-3 border-t border-gray-50 flex items-center justify-between">
+                              <span className="text-[10px] text-gray-300">{new Date(u.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                              <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold" style={{ background: '#F0FDF4', color: '#16A34A' }}>Live on site</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 )}

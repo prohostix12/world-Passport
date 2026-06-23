@@ -15,13 +15,55 @@ const NewsletterSchema = new Schema({
 });
 
 const UniversitySchema = new Schema({
+  // Basic Info
   name: { type: String, required: true },
+  image: { type: String }, // Main display image
   country: { type: String, required: true },
-  city: { type: String },
+  city: { type: String, required: true },
+  type: { type: String, enum: ['Public', 'Private', 'Community College', 'Language School'], required: true },
+
+  // Details
+  description: { type: String, required: true },
+  establishedYear: { type: String },
+  campusLocation: { type: String },
   website: { type: String },
   ranking: { type: String },
-  image: { type: String },
-  description: { type: String },
+
+  // Academic
+  availableCourses: { type: String, required: true },
+  degreeLevels: [{ type: String, enum: ['Diploma', "Bachelor's", "Master's", 'PhD'] }],
+  studyFields: [{ type: String, enum: ['Engineering', 'Business', 'IT', 'Medicine', 'Arts', 'Science', 'Others'] }],
+
+  // Admission
+  intakeMonths: { type: String },
+  applicationDeadline: { type: String },
+  minAcademicRequirement: { type: String },
+  englishRequirement: { type: String },
+
+  // Financial
+  tuitionFee: { type: String },
+  applicationFee: { type: String },
+  scholarshipAvailable: { type: Boolean, default: false },
+  scholarshipDetails: { type: String },
+
+  // Student Info
+  internationalStudentsAccepted: { type: Boolean, default: false },
+  accommodationAvailable: { type: Boolean, default: false },
+  accommodationDetails: { type: String },
+
+  // Media
+  universityImages: [{ type: String }],
+  campusVideoUrl: { type: String },
+
+  // Contact
+  emailAddress: { type: String },
+  phoneNumber: { type: String },
+  address: { type: String },
+
+  // Status
+  featuredUniversity: { type: Boolean, default: false },
+  activeStatus: { type: Boolean, default: true },
+
   createdAt: { type: Date, default: Date.now },
 });
 
