@@ -805,13 +805,47 @@ export default function AdminDashboard() {
               </div>
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 {loading ? <Spinner /> : contacts.length === 0 ? <Empty label="No contact submissions yet." /> : (
-                            <td className="px-5 py-4 text-gray-500 max-w-[140px] truncate">{c.subject || '—'}</td>
-                            <td className="px-5 py-4 text-gray-400 max-w-[200px] truncate" title={c.message}>{c.message}</td>
-                            <td className="px-5 py-4 text-gray-300 text-xs whitespace-nowrap">{new Date(c.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+                  <div>
+                    {/* Desktop Table */}
+                    <div className="hidden sm:block overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="bg-gray-50 text-left">
+                            {['#', 'Name', 'Email', 'Phone', 'Subject', 'Message', 'Date'].map(h => (
+                              <th key={h} className="px-5 py-3.5 text-xs font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>
+                            ))}
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {contacts.map((c, i) => (
+                            <tr key={c._id} className={`border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'} hover:bg-violet-50/30 transition-colors`}>
+                              <td className="px-5 py-4 text-gray-300 font-mono text-xs">{i + 1}</td>
+                              <td className="px-5 py-4 font-semibold text-gray-900 whitespace-nowrap">{c.name}</td>
+                              <td className="px-5 py-4 text-blue-600 whitespace-nowrap"><a href={`mailto:${c.email}`} className="hover:underline">{c.email}</a></td>
+                              <td className="px-5 py-4 text-gray-500 whitespace-nowrap">{c.phone || '—'}</td>
+                              <td className="px-5 py-4 text-gray-500 max-w-[140px] truncate">{c.subject || '—'}</td>
+                              <td className="px-5 py-4 text-gray-400 max-w-[200px] truncate" title={c.message}>{c.message}</td>
+                              <td className="px-5 py-4 text-gray-300 text-xs whitespace-nowrap">{new Date(c.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    {/* Mobile Cards */}
+                    <div className="sm:hidden divide-y divide-gray-50">
+                      {contacts.map((c, i) => (
+                        <div key={c._id} className="p-4 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-gray-900 text-sm">{c.name}</span>
+                            <span className="text-[10px] text-gray-300">{new Date(c.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                          </div>
+                          <a href={`mailto:${c.email}`} className="block text-xs text-blue-600 hover:underline">{c.email}</a>
+                          {c.phone && <p className="text-xs text-gray-500">{c.phone}</p>}
+                          {c.subject && <span className="inline-block text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">{c.subject}</span>}
+                          <p className="text-xs text-gray-400 line-clamp-3">{c.message}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
