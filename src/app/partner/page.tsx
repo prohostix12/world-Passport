@@ -4,8 +4,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AOSInit from '@/components/AOSInit';
 import { motion } from 'framer-motion';
-import { 
-  Building2, Mail, Phone, MapPin, CheckCircle, 
+import {
+  Building2, Mail, Phone, MapPin, CheckCircle,
   ArrowRight, Globe, Users, ShieldCheck, Briefcase
 } from 'lucide-react';
 
@@ -19,7 +19,7 @@ export default function PartnerPage() {
     interest: '',
     message: ''
   });
-  
+
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -56,7 +56,7 @@ export default function PartnerPage() {
 
       <main className="flex-grow pt-32 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           {/* Header Section */}
           <div className="text-center mb-16 max-w-3xl mx-auto" data-aos="fade-up">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-100 text-violet-700 font-semibold text-sm mb-6 border border-violet-200">
@@ -73,7 +73,7 @@ export default function PartnerPage() {
           <div className="grid lg:grid-cols-5 gap-12 lg:gap-8 items-start">
             {/* Left Info Panel */}
             <div className="lg:col-span-2 space-y-8" data-aos="fade-right">
-              
+
               <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
                 <h3 className="font-display font-bold text-2xl text-gray-900 mb-6">Why Partner With Us?</h3>
                 <div className="space-y-6">
@@ -101,15 +101,16 @@ export default function PartnerPage() {
                 <div className="space-y-4 relative z-10">
                   <div className="flex items-center gap-3 text-slate-300">
                     <Mail size={18} className="text-violet-400" />
-                    <span>partners@bmworldpassport.in</span>
+                    <span>bmworldpassport.in</span>
                   </div>
                   <div className="flex items-center gap-3 text-slate-300">
                     <Phone size={18} className="text-violet-400" />
-                    <span>+91 98765 43210</span>
+                    <span>+91 6238067220</span>
                   </div>
                   <div className="flex items-start gap-3 text-slate-300">
                     <MapPin size={18} className="text-violet-400 mt-1 flex-shrink-0" />
-                    <span>Mumbai, Delhi, Bangalore & Europe</span>
+                    <span> St.George Building, Ponekkara, Edappally, Ernakulam, Kerala 682024
+                    </span>
                   </div>
                 </div>
               </div>
@@ -136,7 +137,7 @@ export default function PartnerPage() {
               ) : (
                 <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-8 md:p-10 border border-gray-100 shadow-sm">
                   <h3 className="font-display font-bold text-2xl text-gray-900 mb-8">Partnership Application</h3>
-                  
+
                   {status === 'error' && (
                     <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-2xl text-sm font-medium border border-red-100">
                       Failed to submit request. Please try again or contact us directly.
@@ -146,13 +147,13 @@ export default function PartnerPage() {
                   <div className="grid md:grid-cols-2 gap-6 mb-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Organization Name *</label>
-                      <input type="text" required value={form.organizationName} onChange={e => setForm({...form, organizationName: e.target.value})}
+                      <input type="text" required value={form.organizationName} onChange={e => setForm({ ...form, organizationName: e.target.value })}
                         className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
                         placeholder="University or Company" />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Contact Person *</label>
-                      <input type="text" required value={form.contactPerson} onChange={e => setForm({...form, contactPerson: e.target.value})}
+                      <input type="text" required value={form.contactPerson} onChange={e => setForm({ ...form, contactPerson: e.target.value })}
                         className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
                         placeholder="John Doe" />
                     </div>
@@ -161,13 +162,13 @@ export default function PartnerPage() {
                   <div className="grid md:grid-cols-2 gap-6 mb-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address *</label>
-                      <input type="email" required value={form.email} onChange={e => setForm({...form, email: e.target.value})}
+                      <input type="email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
                         className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
                         placeholder="john@example.com" />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number *</label>
-                      <input type="tel" required value={form.phone} onChange={e => setForm({...form, phone: e.target.value})}
+                      <input type="tel" required value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })}
                         className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
                         placeholder="+1 234 567 8900" />
                     </div>
@@ -176,13 +177,13 @@ export default function PartnerPage() {
                   <div className="grid md:grid-cols-2 gap-6 mb-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Country *</label>
-                      <input type="text" required value={form.country} onChange={e => setForm({...form, country: e.target.value})}
+                      <input type="text" required value={form.country} onChange={e => setForm({ ...form, country: e.target.value })}
                         className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
                         placeholder="e.g. United Kingdom" />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Partnership Interest *</label>
-                      <select required value={form.interest} onChange={e => setForm({...form, interest: e.target.value})}
+                      <select required value={form.interest} onChange={e => setForm({ ...form, interest: e.target.value })}
                         className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all appearance-none cursor-pointer">
                         <option value="" disabled>Select an area of interest</option>
                         {interests.map(interest => (
@@ -194,7 +195,7 @@ export default function PartnerPage() {
 
                   <div className="mb-8">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Message (Optional)</label>
-                    <textarea value={form.message} onChange={e => setForm({...form, message: e.target.value})} rows={4}
+                    <textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} rows={4}
                       className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all resize-none"
                       placeholder="Tell us more about how we can collaborate..." />
                   </div>

@@ -88,7 +88,7 @@ export default function ContactPage() {
             </div>
             <h1 className="font-display font-bold text-5xl md:text-6xl text-white mb-5 leading-tight">
               Let&apos;s Talk About Your{' '}
-              <span className="text-gradient">Future</span>
+              <span className="text-white">Future</span>
             </h1>
             <p className="text-white/60 text-xl max-w-2xl mx-auto">
               Book a free counselling session with our education experts. No commitment, no hidden fees.
@@ -113,8 +113,8 @@ export default function ContactPage() {
 
               {[
                 { icon: Mail, label: 'Email', value: 'bmworldpassport.in' },
-                { icon: Phone, label: 'Phone', value: '+91 98765 43210' },
-                { icon: MapPin, label: 'Office', value: 'Ernakulam Near St.Georges Syro-Malabar Church,Edapally' },
+                { icon: Phone, label: 'Phone', value: '+91 6238067220' },
+                { icon: MapPin, label: 'Office', value: 'St.George Building, Ponekkara,Edappally, Ernakulam, Kerala 682024' },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-blue-50 border border-blue-100">
@@ -220,7 +220,7 @@ export default function ContactPage() {
                     disabled={status === 'loading'}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold text-white bg-gradient-to-r from-[#2563EB] to-[#DC2626] hover:opacity-95 shadow-lg disabled:opacity-60 transition-all"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold text-white bg-blue-600 hover:opacity-95 shadow-lg disabled:opacity-60 transition-all"
                   >
                     {status === 'loading'
                       ? <><Loader size={18} className="animate-spin" /> Sending...</>

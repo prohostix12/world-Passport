@@ -10,38 +10,38 @@ import {
 } from 'lucide-react';
 
 const pillars = [
-  { icon: Heart,   title: 'Listen First',      color: '#DC2626', desc: "Every student's story is unique. We listen carefully before we advise — no cookie-cutter solutions." },
-  { icon: Globe,   title: 'Global Network',     color: '#2563EB', desc: '100+ partner universities across 12 European countries give you unmatched program options.' },
-  { icon: Shield,  title: 'Zero Hidden Fees',   color: '#2563EB', desc: 'Complete transparency. What we quote is exactly what you pay — no surprises, ever.' },
-  { icon: Clock,   title: 'Lifetime Support',   color: '#DC2626', desc: 'From first inquiry to graduation and beyond — our counsellors remain your trusted guides.' },
+  { icon: Heart, title: 'Listen First', color: '#DC2626', desc: "Every student's story is unique. We listen carefully before we advise — no cookie-cutter solutions." },
+  { icon: Globe, title: 'Global Network', color: '#2563EB', desc: '100+ partner universities across 12 European countries give you unmatched program options.' },
+  { icon: Shield, title: 'Zero Hidden Fees', color: '#2563EB', desc: 'Complete transparency. What we quote is exactly what you pay — no surprises, ever.' },
+  { icon: Clock, title: 'Lifetime Support', color: '#DC2626', desc: 'From first inquiry to graduation and beyond — our counsellors remain your trusted guides.' },
 ];
 
 const team = [
-  { name: 'Dr. Amit Kumar', role: 'Founder & CEO',        years: '20+ years in education',   img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80',  color: '#2563EB', bio: 'Former Oxford visiting scholar who turned his passion for education into a movement.' },
-  { name: 'Priya Nair',     role: 'Head of Overseas',     years: '15+ years counselling',    img: 'https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=400&q=80', color: '#DC2626', bio: 'Guided 3,000+ students through European admissions with a near-perfect visa record.' },
-  { name: 'Rohit Sharma',   role: 'University Relations', years: 'Ex-Oxford alumni',          img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80', color: '#2563EB', bio: 'Built our European university network from 10 to 100+ institutions in four years.' },
-  { name: 'Deepa Menon',    role: 'Student Success',      years: 'Supported 5,000+ students', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80', color: '#DC2626', bio: 'Leads our post-admission support team ensuring every student thrives abroad.' },
+  { name: 'Dr. Amit Kumar', role: 'Founder & CEO', years: '20+ years in education', img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80', color: '#2563EB', bio: 'Former Oxford visiting scholar who turned his passion for education into a movement.' },
+  { name: 'Priya Nair', role: 'Head of Overseas', years: '15+ years counselling', img: 'https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=400&q=80', color: '#DC2626', bio: 'Guided 3,000+ students through European admissions with a near-perfect visa record.' },
+  { name: 'Rohit Sharma', role: 'University Relations', years: 'Ex-Oxford alumni', img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80', color: '#2563EB', bio: 'Built our European university network from 10 to 100+ institutions in four years.' },
+  { name: 'Deepa Menon', role: 'Student Success', years: 'Supported 5,000+ students', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80', color: '#DC2626', bio: 'Leads our post-admission support team ensuring every student thrives abroad.' },
 ];
 
 const offices = [
-  { city: 'Mumbai',    country: 'India',   flag: '🇮🇳', type: 'Headquarters' },
-  { city: 'Delhi',     country: 'India',   flag: '🇮🇳', type: 'Regional Office' },
-  { city: 'Bangalore', country: 'India',   flag: '🇮🇳', type: 'Regional Office' },
+  { city: 'Mumbai', country: 'India', flag: '🇮🇳', type: 'Headquarters' },
+  { city: 'Delhi', country: 'India', flag: '🇮🇳', type: 'Regional Office' },
+  { city: 'Bangalore', country: 'India', flag: '🇮🇳', type: 'Regional Office' },
   { city: 'Frankfurt', country: 'Germany', flag: '🇩🇪', type: 'Europe Office' },
 ];
 
 const awards = [
-  { title: 'Most Trusted Education Agency',    year: '2023', body: 'Education Today Awards' },
+  { title: 'Most Trusted Education Agency', year: '2023', body: 'Education Today Awards' },
   { title: 'Best Overseas Counselling Service', year: '2022', body: 'Times Education' },
-  { title: 'ISO 9001:2015 Certified',           year: '2021', body: 'International Standards' },
-  { title: 'Top 10 Education Consultants',      year: '2020', body: 'India Education Summit' },
+  { title: 'ISO 9001:2015 Certified', year: '2021', body: 'International Standards' },
+  { title: 'Top 10 Education Consultants', year: '2020', body: 'India Education Summit' },
 ];
 
 const statItems = [
-  { val: '2015',    label: 'Year Founded',         color: '#2563EB' },
-  { val: '10,000+', label: 'Students Served',       color: '#DC2626' },
-  { val: '100+',    label: 'Partner Universities',  color: '#2563EB' },
-  { val: '12',      label: 'European Countries',    color: '#DC2626' },
+  { val: '2015', label: 'Year Founded', color: '#2563EB' },
+  { val: '10,000+', label: 'Students Served', color: '#DC2626' },
+  { val: '100+', label: 'Partner Universities', color: '#2563EB' },
+  { val: '12', label: 'European Countries', color: '#DC2626' },
 ];
 
 export default function AboutPage() {
@@ -61,7 +61,7 @@ export default function AboutPage() {
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         {/* White overlay */}
-      <div className="absolute inset-0 bg-[#060C1F]/55 pointer-events-none" />
+        <div className="absolute inset-0 bg-[#060C1F]/55 pointer-events-none" />
         {/* Bottom fade into white */}
         {/* <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'linear-gradient(180deg, transparent 30%, rgba(240,244,255,0.80) 80%, #f0f4ff 100%)' }} /> */}
@@ -105,8 +105,8 @@ export default function AboutPage() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center mb-14">
               <Link href="/contact">
                 <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-                  className="px-8 py-4 rounded-full font-semibold text-white flex items-center gap-2 mx-auto sm:mx-0 shadow-lg"
-                  style={{ background: 'linear-gradient(135deg, #2563EB, #DC2626)' }}>
+                  className="px-8 py-4 rounded-full font-semibold text-white bg-blue-600 flex items-center gap-2 mx-auto sm:mx-0 shadow-lg"
+                >
                   Work With Us <ArrowRight size={16} />
                 </motion.button>
               </Link>
@@ -121,10 +121,10 @@ export default function AboutPage() {
               className="flex flex-wrap items-center justify-center gap-px rounded-2xl overflow-hidden mx-auto max-w-2xl"
               style={{ border: '1px solid rgba(37,99,235,0.20)', background: 'rgba(255,255,255,0.70)', backdropFilter: 'blur(16px)' }}>
               {[
-                { val: '2015',    label: 'Founded',             color: '#2563EB' },
-                { val: '10,000+', label: 'Students Served',     color: '#2563EB' },
-                { val: '100+',    label: 'Partner Universities', color: '#DC2626' },
-                { val: '12',      label: 'European Countries',   color: '#DC2626' },
+                { val: '2015', label: 'Founded', color: '#2563EB' },
+                { val: '10,000+', label: 'Students Served', color: '#2563EB' },
+                { val: '100+', label: 'Partner Universities', color: '#DC2626' },
+                { val: '12', label: 'European Countries', color: '#DC2626' },
               ].map((s, i) => (
                 <div key={s.label}
                   className={`flex-1 min-w-[100px] px-4 py-4 text-center ${i < 3 ? 'border-r border-gray-200' : ''}`}>
@@ -212,20 +212,19 @@ export default function AboutPage() {
           <div className="text-center mb-14" data-aos="fade-up">
             <span className="badge badge-blue mb-4">Leadership</span>
             <h2 className="font-display font-bold text-4xl md:text-5xl text-gray-900 mb-3">
-              Meet the <span className="text-gradient">Team</span>
+              Meet the Team
             </h2>
-            <p className="text-gray-500 max-w-md mx-auto">Experienced counsellors who&apos;ve lived the international education journey</p>
+            <p className="text-gray-500 max-w-md mx-auto mb-14">Experienced counsellors who've lived the international education journey</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {team.map((member, i) => (
               <div key={member.name} data-aos="fade-up" data-aos-delay={i * 80}
                 className="relative bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden cursor-default hover:shadow-md hover:-translate-y-2 transition-all">
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative h-64 overflow-hidden">
                   <div className="absolute inset-0 transition-transform duration-700 hover:scale-105"
                     style={{ backgroundImage: `url('${member.img}')`, backgroundSize: 'cover', backgroundPosition: 'center top' }} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
                 </div>
-                <div className="p-6 -mt-6 relative">
+                <div className="p-6 relative z-10 bg-white">
                   <h3 className="font-display font-bold text-gray-900 mb-0.5">{member.name}</h3>
                   <div className="text-sm font-semibold mb-2" style={{ color: member.color }}>{member.role}</div>
                   <div className="text-gray-400 text-xs mb-3">{member.years}</div>

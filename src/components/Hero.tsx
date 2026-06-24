@@ -80,7 +80,7 @@ export default function Hero() {
           >
             <Link
               href="/contact"
-              className="rounded-full px-8 py-3.5 text-sm text-white font-semibold flex items-center gap-2 bg-blue shadow-[0_20px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:shadow-[0_28px_60px_rgba(37,99,235,0.50)] hover:scale-105"
+              className="rounded-full px-8 py-3.5 text-sm text-white font-semibold flex items-center gap-2 bg-blue-700 transition-all duration-300 hover:shadow-[0_28px_60px_rgba(37,99,235,0.50)] hover:scale-105"
             >
               Start Your Journey <ArrowRight size={16} />
             </Link>
@@ -98,8 +98,8 @@ export default function Hero() {
           >
             {[
               { icon: CheckCircle, text: '100+ Partner Universities', color: '#3B82F6' },
-              { icon: CheckCircle, text: '10,000+ Students Placed',   color: '#DC2626' },
-              { icon: CheckCircle, text: '12 European Countries',     color: '#3B82F6' },
+              { icon: CheckCircle, text: '10,000+ Students Placed', color: '#DC2626' },
+              { icon: CheckCircle, text: '12 European Countries', color: '#3B82F6' },
             ].map(({ icon: Icon, text, color }) => (
               <div key={text} className="flex items-center gap-2">
                 <Icon size={14} style={{ color }} />
@@ -110,7 +110,7 @@ export default function Hero() {
         </div>
 
         {/* Floating badges — bottom-right area */}
-        <div className="hidden lg:block">         
+        <div className="hidden lg:block">
 
         </div>
       </div>

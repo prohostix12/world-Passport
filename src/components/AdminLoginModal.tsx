@@ -81,7 +81,7 @@ export default function AdminLoginModal({ open, onClose }: AdminLoginModalProps)
 
               {/* Header */}
               <div className="mb-8">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#2563EB] to-[#DC2626] flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center mb-4">
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
@@ -156,7 +156,7 @@ export default function AdminLoginModal({ open, onClose }: AdminLoginModalProps)
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 px-6 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-[#2563EB] to-[#DC2626] hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md shadow-blue-200"
+                  className="w-full py-3 px-6 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md shadow-blue-200"
                 >
                   {loading && <Loader2 size={16} className="animate-spin" />}
                   {loading ? 'Signing in…' : 'Sign In'}

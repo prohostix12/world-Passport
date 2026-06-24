@@ -103,9 +103,9 @@ export default function Footer() {
             <h4 className="font-display font-semibold text-gray-800 text-sm mb-4">Contact</h4>
             <ul className="space-y-3">
               {[
-                { icon: Mail,   text: 'bm@worldpassport.in' },
-                { icon: Phone,  text: '+91 9205031277' },
-                { icon: MapPin, text: 'India & Europe offices' },
+                { icon: Mail, text: 'bm@worldpassport.in' },
+                { icon: Phone, text: '+91 9205031277' },
+                { icon: MapPin, text: 'Ernakulam  Near st.Georges Syro-Malabar Church,Edapally' },
                 // { icon: Globe,  text: 'gecouncil.com' },
               ].map(({ icon: Icon, text }) => (
                 <li key={text} className="flex items-start gap-3 text-sm text-gray-500">

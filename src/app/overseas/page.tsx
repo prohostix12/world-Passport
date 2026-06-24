@@ -162,7 +162,7 @@ export default function OverseasPage() {
     const unisForCountry = dbUniversities.filter(u => u.country === countryName);
     const uniWithImage = unisForCountry.find(u => u.image);
     const uniWithFee = unisForCountry.find(u => u.tuitionFee);
-    
+
     const colors = ['#3B82F6', '#FF6B00', '#FF3B3B', '#00C9B0', '#FFB800', '#A855F7'];
     const color = colors[idx % colors.length];
 
@@ -504,164 +504,164 @@ export default function OverseasPage() {
           </div>
 
           {active && (
-          <AnimatePresence mode="wait">
-            <motion.div key={activeCountry}
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-              className="grid lg:grid-cols-2 gap-6">
+            <AnimatePresence mode="wait">
+              <motion.div key={activeCountry}
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+                className="grid lg:grid-cols-2 gap-6">
 
-              {/* Left — image + stats */}
-              <div className="relative rounded-3xl overflow-hidden min-h-[380px]"
-                style={{ border: `1px solid ${active.color}40` }}>
-                {/* Background image using img tag for reliable local file rendering */}
-                {countryImg && (
-                  <img
-                    src={countryImg}
-                    alt={active.name}
-                    aria-hidden="true"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                )}
-                {/* Only a subtle dark gradient at bottom for text readability */}
-                <div className="absolute inset-0"
-                  style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.65) 100%)' }} />
-                <div className="absolute top-0 left-0 right-0 h-[3px]"
-                  style={{ background: `linear-gradient(90deg, transparent, ${active.color}, transparent)` }} />
+                {/* Left — image + stats */}
+                <div className="relative rounded-3xl overflow-hidden min-h-[380px]"
+                  style={{ border: `1px solid ${active.color}40` }}>
+                  {/* Background image using img tag for reliable local file rendering */}
+                  {countryImg && (
+                    <img
+                      src={countryImg}
+                      alt={active.name}
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
+                  {/* Only a subtle dark gradient at bottom for text readability */}
+                  <div className="absolute inset-0"
+                    style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.65) 100%)' }} />
+                  <div className="absolute top-0 left-0 right-0 h-[3px]"
+                    style={{ background: `linear-gradient(90deg, transparent, ${active.color}, transparent)` }} />
 
-                <div className="relative p-8 h-full flex flex-col justify-between">
-                   <div>
-                     <div className="flex items-center gap-3 mb-3">
-                       <span className="text-4xl">{active.flag}</span>
-                       <div>
-                         <h3 className="font-display font-bold text-2xl text-white">{active.name}</h3>
-                         <p className="text-white/70 text-sm">{active.tagline}</p>
-                       </div>
-                     </div>
-                     <span className="text-xs px-2.5 py-1 rounded-full font-bold tracking-wider uppercase"
-                       style={{ background: `${active.color}30`, color: 'white', border: `1px solid ${active.color}60` }}>
-                       {active.tag}
-                     </span>
-                   </div>
-
-                  {/* Key stats */}
-                  <div className="grid grid-cols-2 gap-3 mt-6">
-                    {[
-                      { label: 'Universities', value: universityCount, icon: Building2 },
-                      { label: 'Avg. Cost', value: avgCostVal, icon: DollarSign },
-                      { label: 'Acceptance', value: active.stats.acceptance, icon: CheckCircle },
-                      { label: 'Intl Students', value: active.stats.intl, icon: Users },
-                    ].map(({ label, value, icon: Icon }) => (
-                      <div key={label} className="rounded-xl p-3 flex items-center gap-3"
-                        style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)' }}>
-                        <Icon size={15} style={{ color: 'white', flexShrink: 0 }} />
+                  <div className="relative p-8 h-full flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="text-4xl">{active.flag}</span>
                         <div>
-                          <div className="text-white font-bold text-sm">{value}</div>
-                          <div className="text-white/65 text-xs">{label}</div>
+                          <h3 className="font-display font-bold text-2xl text-white">{active.name}</h3>
+                          <p className="text-white/70 text-sm">{active.tagline}</p>
                         </div>
                       </div>
-                    ))}
-                  </div>
+                      <span className="text-xs px-2.5 py-1 rounded-full font-bold tracking-wider uppercase"
+                        style={{ background: `${active.color}30`, color: 'white', border: `1px solid ${active.color}60` }}>
+                        {active.tag}
+                      </span>
+                    </div>
 
-                  {/* Avg salary */}
-                  <div className="mt-4 rounded-xl p-3 flex items-center justify-between"
-                    style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)' }}>
-                    <span className="text-white/80 text-sm flex items-center gap-2"><Briefcase size={14} /> Avg. Graduate Salary</span>
-                    <span className="font-bold text-white">{active.salary}</span>
+                    {/* Key stats */}
+                    <div className="grid grid-cols-2 gap-3 mt-6">
+                      {[
+                        { label: 'Universities', value: universityCount, icon: Building2 },
+                        { label: 'Avg. Cost', value: avgCostVal, icon: DollarSign },
+                        { label: 'Acceptance', value: active.stats.acceptance, icon: CheckCircle },
+                        { label: 'Intl Students', value: active.stats.intl, icon: Users },
+                      ].map(({ label, value, icon: Icon }) => (
+                        <div key={label} className="rounded-xl p-3 flex items-center gap-3"
+                          style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)' }}>
+                          <Icon size={15} style={{ color: 'white', flexShrink: 0 }} />
+                          <div>
+                            <div className="text-white font-bold text-sm">{value}</div>
+                            <div className="text-white/65 text-xs">{label}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Avg salary */}
+                    <div className="mt-4 rounded-xl p-3 flex items-center justify-between"
+                      style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)' }}>
+                      <span className="text-white/80 text-sm flex items-center gap-2"><Briefcase size={14} /> Avg. Graduate Salary</span>
+                      <span className="font-bold text-white">{active.salary}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Right — universities + highlights */}
-              <div className="flex flex-col gap-4">
-                {/* Universities in this country from DB */}
-                <div className="rounded-3xl p-6"
-                  style={{ background: '#fff', border: '1px solid rgb(229,231,235)' }}>
-                  <h4 className="font-display font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <Landmark size={16} style={{ color: active.color }} /> Top Universities
-                  </h4>
+                {/* Right — universities + highlights */}
+                <div className="flex flex-col gap-4">
+                  {/* Universities in this country from DB */}
+                  <div className="rounded-3xl p-6"
+                    style={{ background: '#fff', border: '1px solid rgb(229,231,235)' }}>
+                    <h4 className="font-display font-bold text-gray-900 mb-4 flex items-center gap-2">
+                      <Landmark size={16} style={{ color: active.color }} /> Top Universities
+                    </h4>
 
-                  {uniLoading ? (
-                    <div className="flex items-center justify-center py-8 gap-3 text-gray-400">
-                      <Loader2 size={18} className="animate-spin" />
-                      <span className="text-sm">Loading universities…</span>
-                    </div>
-                  ) : countryUniversities.length > 0 ? (
-                    <div className="space-y-2.5">
-                      {countryUniversities.map((uni, i) => {
-                        const displayRank = uni.ranking 
-                          ? (uni.ranking.toLowerCase().includes('qs') 
-                              ? (uni.ranking.startsWith('#') ? uni.ranking : `#${uni.ranking}`) 
+                    {uniLoading ? (
+                      <div className="flex items-center justify-center py-8 gap-3 text-gray-400">
+                        <Loader2 size={18} className="animate-spin" />
+                        <span className="text-sm">Loading universities…</span>
+                      </div>
+                    ) : countryUniversities.length > 0 ? (
+                      <div className="space-y-2.5">
+                        {countryUniversities.map((uni, i) => {
+                          const displayRank = uni.ranking
+                            ? (uni.ranking.toLowerCase().includes('qs')
+                              ? (uni.ranking.startsWith('#') ? uni.ranking : `#${uni.ranking}`)
                               : `#${uni.ranking.startsWith('#') ? uni.ranking.substring(1) : uni.ranking} QS`)
-                          : null;
+                            : null;
 
-                        return (
-                          <motion.div key={uni._id}
-                            initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: i * 0.08 }}>
-                            <Link href={`/universities/${uni._id}`}
-                              className="flex items-center justify-between rounded-xl px-4 py-3 group hover:shadow-md transition-all cursor-pointer block"
-                              style={{ background: '#F8FAFC', border: '1px solid rgb(229,231,235)' }}>
-                              <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
-                                  style={{ background: `${active.color}18`, color: active.color }}>
-                                  {i + 1}
-                                </div>
-                                <div>
-                                  <div className="text-gray-900 text-sm font-semibold group-hover:text-violet-600 transition-colors">{uni.name}</div>
-                                  <div className="text-gray-400 text-xs">
-                                    {uni.studyFields && uni.studyFields.length > 0 ? uni.studyFields[0] : (uni.type || 'General')}
+                          return (
+                            <motion.div key={uni._id}
+                              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: i * 0.08 }}>
+                              <Link href={`/universities/${uni._id}`}
+                                className="flex items-center justify-between rounded-xl px-4 py-3 group hover:shadow-md transition-all cursor-pointer block"
+                                style={{ background: '#F8FAFC', border: '1px solid rgb(229,231,235)' }}>
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
+                                    style={{ background: `${active.color}18`, color: active.color }}>
+                                    {i + 1}
+                                  </div>
+                                  <div>
+                                    <div className="text-gray-900 text-sm font-semibold group-hover:text-violet-600 transition-colors">{uni.name}</div>
+                                    <div className="text-gray-400 text-xs">
+                                      {uni.studyFields && uni.studyFields.length > 0 ? uni.studyFields[0] : (uni.type || 'General')}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                              {displayRank && (
-                                <span className="text-xs font-semibold px-2 py-1 rounded-full flex-shrink-0"
-                                  style={{ background: `${active.color}10`, color: active.color }}>
-                                  {displayRank}
-                                </span>
-                              )}
-                            </Link>
-                          </motion.div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8">
-                      <GraduationCap size={32} className="mx-auto mb-3 text-gray-200" />
-                      <p className="text-gray-400 text-sm">No universities added for {activeCountryName} yet.</p>
-                      <p className="text-gray-300 text-xs mt-1">Admin can add universities via the dashboard.</p>
-                    </div>
-                  )}
-                </div>
+                                {displayRank && (
+                                  <span className="text-xs font-semibold px-2 py-1 rounded-full flex-shrink-0"
+                                    style={{ background: `${active.color}10`, color: active.color }}>
+                                    {displayRank}
+                                  </span>
+                                )}
+                              </Link>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <GraduationCap size={32} className="mx-auto mb-3 text-gray-200" />
+                        <p className="text-gray-400 text-sm">No universities added for {activeCountryName} yet.</p>
+                        <p className="text-gray-300 text-xs mt-1">Admin can add universities via the dashboard.</p>
+                      </div>
+                    )}
+                  </div>
 
-                {/* Highlights */}
-                <div className="rounded-3xl p-6"
-                  style={{ background: '#fff', border: '1px solid rgb(229,231,235)' }}>
-                  <h4 className="font-display font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <Star size={16} style={{ color: active.color }} /> Why Study Here?
-                  </h4>
-                  <ul className="space-y-2.5">
-                    {active.highlights.map((h, i) => (
-                      <motion.li key={h}
-                        initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.07 }}
-                        className="flex items-start gap-2.5 text-sm text-gray-600">
-                        <CheckCircle size={14} className="mt-0.5 flex-shrink-0" style={{ color: active.color }} />
-                        {h}
-                      </motion.li>
-                    ))}
-                  </ul>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {active.programs.map(p => (
-                      <span key={p} className="text-xs px-2.5 py-1 rounded-full font-medium"
-                        style={{ background: `${active.color}10`, color: active.color, border: `1px solid ${active.color}20` }}>
-                        {p}
-                      </span>
-                    ))}
+                  {/* Highlights */}
+                  <div className="rounded-3xl p-6"
+                    style={{ background: '#fff', border: '1px solid rgb(229,231,235)' }}>
+                    <h4 className="font-display font-bold text-gray-900 mb-4 flex items-center gap-2">
+                      <Star size={16} style={{ color: active.color }} /> Why Study Here?
+                    </h4>
+                    <ul className="space-y-2.5">
+                      {active.highlights.map((h, i) => (
+                        <motion.li key={h}
+                          initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.07 }}
+                          className="flex items-start gap-2.5 text-sm text-gray-600">
+                          <CheckCircle size={14} className="mt-0.5 flex-shrink-0" style={{ color: active.color }} />
+                          {h}
+                        </motion.li>
+                      ))}
+                    </ul>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {active.programs.map(p => (
+                        <span key={p} className="text-xs px-2.5 py-1 rounded-full font-medium"
+                          style={{ background: `${active.color}10`, color: active.color, border: `1px solid ${active.color}20` }}>
+                          {p}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              </motion.div>
+            </AnimatePresence>
           )}
         </div>
       </section>
@@ -890,7 +890,7 @@ export default function OverseasPage() {
             </div>
 
             <h2 className="font-display font-bold text-3xl md:text-5xl text-white mb-4">
-              Ready to Study in <span className="text-gradient">Europe?</span>
+              Ready to Study in <span className="text-white">Europe?</span>
             </h2>
             <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
               Book your free 30-minute consultation. Our advisors will map out your full journey — no commitment required.
