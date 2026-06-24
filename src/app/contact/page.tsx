@@ -112,7 +112,7 @@ export default function ContactPage() {
               </div>
 
               {[
-                { icon: Mail, label: 'Email', value: 'bmworldpassport.in' },
+                { icon: Mail, label: 'Email', value: 'bm@worldpassport.in' },
                 { icon: Phone, label: 'Phone', value: '+91 6238067220' },
                 { icon: MapPin, label: 'Office', value: 'St.George Building, Ponekkara,Edappally, Ernakulam, Kerala 682024' },
               ].map(({ icon: Icon, label, value }) => (

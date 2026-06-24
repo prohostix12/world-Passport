@@ -57,7 +57,7 @@ function ToastContainer({ toasts }: { toasts: ToastMsg[] }) {
 
 /* ── Types ── */
 interface ContactEntry { _id: string; name: string; email: string; phone?: string; subject?: string; message: string; createdAt: string; }
-interface UniversityEntry { 
+interface UniversityEntry {
   _id: string; name: string; image?: string; country: string; city: string; type: string;
   description: string; establishedYear?: string; campusLocation?: string; website?: string; ranking?: string;
   availableCourses: string; degreeLevels: string[]; studyFields: string[]; intakeMonths?: string;
@@ -72,7 +72,7 @@ interface PartnerEntry { _id: string; organizationName: string; contactPerson: s
 
 type Tab = 'dashboard' | 'universities' | 'courses' | 'contacts' | 'partners';
 
-const EMPTY_UNI = { 
+const EMPTY_UNI = {
   name: '', image: '', country: '', city: '', type: 'Public', description: '',
   establishedYear: '', campusLocation: '', website: '', ranking: '',
   availableCourses: '', degreeLevels: [] as string[], studyFields: [] as string[],
@@ -545,9 +545,8 @@ export default function AdminDashboard() {
 
       {/* ── SIDEBAR ── */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 h-screen z-40 lg:z-20 flex flex-col transition-transform duration-300 flex-shrink-0 ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        }`}
+        className={`fixed lg:sticky top-0 left-0 h-screen z-40 lg:z-20 flex flex-col transition-transform duration-300 flex-shrink-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+          }`}
         style={{ width: 240, background: '#181C2E', overflowY: 'auto' }}
       >
         {/* Logo */}
@@ -609,7 +608,7 @@ export default function AdminDashboard() {
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
               <div className="text-right hidden sm:block">
-                <p className="text-sm font-semibold text-gray-800">bmworldpassport.in</p>
+                <p className="text-sm font-semibold text-gray-800">bm@worldpassport.in</p>
                 <p className="text-xs text-gray-400">Administrator</p>
               </div>
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm shadow" style={{ background: 'linear-gradient(135deg,#7C3AED,#4F46E5)' }}>A</div>
@@ -683,17 +682,17 @@ export default function AdminDashboard() {
           {/* ── UNIVERSITIES ── */}
           {activeTab === 'universities' && (
             <div>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-                  <div>
-                    <h2 className="text-xl font-bold text-gray-900">Universities</h2>
-                    <p className="text-sm text-gray-400 mt-0.5">{loading ? '…' : `${universities.length} universities • visible on website`}</p>
-                  </div>
-                  <button onClick={openAdd}
-                    className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold text-white shadow-md transition-all hover:opacity-90 hover:scale-105 w-full sm:w-auto justify-center"
-                    style={{ background: 'linear-gradient(135deg,#6D28D9,#7C3AED)' }}>
-                    <Plus size={16} /> Add University
-                  </button>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">Universities</h2>
+                  <p className="text-sm text-gray-400 mt-0.5">{loading ? '…' : `${universities.length} universities • visible on website`}</p>
                 </div>
+                <button onClick={openAdd}
+                  className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold text-white shadow-md transition-all hover:opacity-90 hover:scale-105 w-full sm:w-auto justify-center"
+                  style={{ background: 'linear-gradient(135deg,#6D28D9,#7C3AED)' }}>
+                  <Plus size={16} /> Add University
+                </button>
+              </div>
 
               {loading ? <Spinner /> : universities.length === 0
                 ? <Empty label="No universities yet. Click 'Add University' to get started — they'll appear live on the website." />
@@ -757,17 +756,17 @@ export default function AdminDashboard() {
           {/* ── COURSES ── */}
           {activeTab === 'courses' && (
             <div>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-                  <div>
-                    <h2 className="text-xl font-bold text-gray-900">Courses</h2>
-                    <p className="text-sm text-gray-400 mt-0.5">{loading ? '…' : `${courses.length} courses added`}</p>
-                  </div>
-                  <button onClick={() => setShowCourseModal(true)}
-                    className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold text-white shadow-md transition-all hover:opacity-90 hover:scale-105 w-full sm:w-auto justify-center"
-                    style={{ background: 'linear-gradient(135deg,#0EA5E9,#2563EB)' }}>
-                    <Plus size={16} /> Add Course
-                  </button>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">Courses</h2>
+                  <p className="text-sm text-gray-400 mt-0.5">{loading ? '…' : `${courses.length} courses added`}</p>
                 </div>
+                <button onClick={() => setShowCourseModal(true)}
+                  className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold text-white shadow-md transition-all hover:opacity-90 hover:scale-105 w-full sm:w-auto justify-center"
+                  style={{ background: 'linear-gradient(135deg,#0EA5E9,#2563EB)' }}>
+                  <Plus size={16} /> Add Course
+                </button>
+              </div>
 
               {loading ? <Spinner /> : courses.length === 0
                 ? <Empty label="No courses yet. Click 'Add Course' to get started." />
@@ -937,13 +936,12 @@ export default function AdminDashboard() {
                                 <select
                                   value={p.status}
                                   onChange={(e) => updatePartnerStatus(p._id, e.target.value as any)}
-                                  className={`text-xs font-semibold px-2 py-1 rounded-lg border focus:outline-none transition-colors cursor-pointer ${
-                                    p.status === 'Approved'
+                                  className={`text-xs font-semibold px-2 py-1 rounded-lg border focus:outline-none transition-colors cursor-pointer ${p.status === 'Approved'
                                       ? 'bg-green-50 text-green-700 border-green-200'
                                       : p.status === 'Rejected'
-                                      ? 'bg-red-50 text-red-700 border-red-200'
-                                      : 'bg-amber-50 text-amber-700 border-amber-200'
-                                  }`}
+                                        ? 'bg-red-50 text-red-700 border-red-200'
+                                        : 'bg-amber-50 text-amber-700 border-amber-200'
+                                    }`}
                                 >
                                   <option value="Pending">Pending</option>
                                   <option value="Approved">Approved</option>
@@ -984,13 +982,12 @@ export default function AdminDashboard() {
                             <select
                               value={p.status}
                               onChange={(e) => updatePartnerStatus(p._id, e.target.value as any)}
-                              className={`text-xs font-semibold px-2 py-1 rounded-lg border focus:outline-none flex-shrink-0 ${
-                                p.status === 'Approved'
+                              className={`text-xs font-semibold px-2 py-1 rounded-lg border focus:outline-none flex-shrink-0 ${p.status === 'Approved'
                                   ? 'bg-green-50 text-green-700 border-green-200'
                                   : p.status === 'Rejected'
-                                  ? 'bg-red-50 text-red-700 border-red-200'
-                                  : 'bg-amber-50 text-amber-700 border-amber-200'
-                              }`}
+                                    ? 'bg-red-50 text-red-700 border-red-200'
+                                    : 'bg-amber-50 text-amber-700 border-amber-200'
+                                }`}
                             >
                               <option value="Pending">Pending</option>
                               <option value="Approved">Approved</option>
@@ -1142,13 +1139,12 @@ export default function AdminDashboard() {
                     updatePartnerStatus(selectedPartner._id, newStatus);
                     setSelectedPartner(p => p ? { ...p, status: newStatus } : null);
                   }}
-                  className={`text-xs font-semibold px-2.5 py-1 rounded-lg border focus:outline-none transition-colors cursor-pointer ${
-                    selectedPartner.status === 'Approved'
+                  className={`text-xs font-semibold px-2.5 py-1 rounded-lg border focus:outline-none transition-colors cursor-pointer ${selectedPartner.status === 'Approved'
                       ? 'bg-green-50 text-green-700 border-green-200'
                       : selectedPartner.status === 'Rejected'
-                      ? 'bg-red-50 text-red-700 border-red-200'
-                      : 'bg-amber-50 text-amber-700 border-amber-200'
-                  }`}
+                        ? 'bg-red-50 text-red-700 border-red-200'
+                        : 'bg-amber-50 text-amber-700 border-amber-200'
+                    }`}
                 >
                   <option value="Pending">Pending</option>
                   <option value="Approved">Approved</option>

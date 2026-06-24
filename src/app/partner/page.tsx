@@ -101,7 +101,7 @@ export default function PartnerPage() {
                 <div className="space-y-4 relative z-10">
                   <div className="flex items-center gap-3 text-slate-300">
                     <Mail size={18} className="text-violet-400" />
-                    <span>bmworldpassport.in</span>
+                    <span>bm@worldpassport.in</span>
                   </div>
                   <div className="flex items-center gap-3 text-slate-300">
                     <Phone size={18} className="text-violet-400" />

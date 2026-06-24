@@ -141,12 +141,12 @@ export default function Process() {
                       <p className="text-gray-500 text-sm leading-relaxed mb-4">
                         {step.desc}
                       </p>
-                      <div
+                      {/* <div
                         className="flex items-center gap-1.5 text-xs font-semibold transition-all group-hover:gap-2.5"
                         style={{ color: step.color }}
                       >
                         Learn more <ArrowRight size={12} />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 
