@@ -192,11 +192,11 @@ function UniversityForm({
           <label className={labelCls}>University Name *</label>
           <input required className={inputCls} value={form.name} onChange={upd('name')} />
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div><label className={labelCls}>Country *</label><input required className={inputCls} value={form.country} onChange={upd('country')} /></div>
           <div><label className={labelCls}>City *</label><input required className={inputCls} value={form.city} onChange={upd('city')} /></div>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className={labelCls}>University Type *</label>
             <select required className={inputCls} value={form.type} onChange={upd('type')}>
@@ -210,7 +210,7 @@ function UniversityForm({
 
       <Section title="Details">
         <div><label className={labelCls}>Description *</label><textarea required rows={3} className={inputCls} value={form.description} onChange={upd('description')} /></div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div><label className={labelCls}>Campus Location</label><input className={inputCls} value={form.campusLocation} onChange={upd('campusLocation')} /></div>
           <div><label className={labelCls}>Website URL</label><input className={inputCls} value={form.website} onChange={upd('website')} /></div>
         </div>
@@ -238,22 +238,22 @@ function UniversityForm({
       </Section>
 
       <Section title="Admission Information">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div><label className={labelCls}>Intake Months</label><input className={inputCls} value={form.intakeMonths} onChange={upd('intakeMonths')} /></div>
           <div><label className={labelCls}>Application Deadline</label><input className={inputCls} value={form.applicationDeadline} onChange={upd('applicationDeadline')} /></div>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div><label className={labelCls}>Min Academic Req</label><input className={inputCls} value={form.minAcademicRequirement} onChange={upd('minAcademicRequirement')} /></div>
           <div><label className={labelCls}>English Req (IELTS/TOEFL)</label><input className={inputCls} value={form.englishRequirement} onChange={upd('englishRequirement')} /></div>
         </div>
       </Section>
 
       <Section title="Financial & Student Info">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div><label className={labelCls}>Tuition Fee (Per Year)</label><input className={inputCls} value={form.tuitionFee} onChange={upd('tuitionFee')} /></div>
           <div><label className={labelCls}>Application Fee</label><input className={inputCls} value={form.applicationFee} onChange={upd('applicationFee')} /></div>
         </div>
-        <div className="flex items-center gap-4 mt-2">
+        <div className="flex flex-wrap items-center gap-3 mt-2">
           <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={form.scholarshipAvailable} onChange={upd('scholarshipAvailable')} /> Scholarship Available</label>
           <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={form.internationalStudentsAccepted} onChange={upd('internationalStudentsAccepted')} /> Int. Students Accepted</label>
           <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={form.accommodationAvailable} onChange={upd('accommodationAvailable')} /> Accommodation Available</label>
@@ -281,12 +281,12 @@ function UniversityForm({
       </Section>
 
       <Section title="Contact Information & Status">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div><label className={labelCls}>Email Address</label><input type="email" className={inputCls} value={form.emailAddress} onChange={upd('emailAddress')} /></div>
           <div><label className={labelCls}>Phone Number</label><input className={inputCls} value={form.phoneNumber} onChange={upd('phoneNumber')} /></div>
         </div>
         <div><label className={labelCls}>Address</label><input className={inputCls} value={form.address} onChange={upd('address')} /></div>
-        <div className="flex items-center gap-4 mt-2">
+        <div className="flex flex-wrap items-center gap-3 mt-2">
           <label className="flex items-center gap-2 text-sm font-bold text-violet-600"><input type="checkbox" checked={form.featuredUniversity} onChange={upd('featuredUniversity')} /> Featured University</label>
           <label className="flex items-center gap-2 text-sm font-bold text-green-600"><input type="checkbox" checked={form.activeStatus} onChange={upd('activeStatus')} /> Active / Visible</label>
         </div>
@@ -308,7 +308,7 @@ function UniversityForm({
 export default function AdminDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { toasts, show: showToast } = useToast();
 
   /* data */
@@ -535,21 +535,29 @@ export default function AdminDashboard() {
     <div className="flex min-h-screen bg-[#F4F6FB] font-sans">
       <ToastContainer toasts={toasts} />
 
+      {/* ── MOBILE SIDEBAR OVERLAY ── */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* ── SIDEBAR ── */}
       <aside
-        className="flex flex-col transition-all duration-300 z-20 flex-shrink-0"
-        style={{ width: sidebarOpen ? 240 : 72, background: '#181C2E', minHeight: '100vh', position: 'sticky', top: 0, height: '100vh', overflowY: 'auto' }}
+        className={`fixed lg:sticky top-0 left-0 h-screen z-40 lg:z-20 flex flex-col transition-transform duration-300 flex-shrink-0 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        }`}
+        style={{ width: 240, background: '#181C2E', overflowY: 'auto' }}
       >
         {/* Logo */}
         <div className="flex items-center gap-3 px-5 py-6 border-b border-white/10">
           <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg,#7C3AED,#4F46E5)' }}>
             <Globe size={18} className="text-white" />
           </div>
-          {sidebarOpen && <span className="text-white font-bold text-[15px] tracking-tight whitespace-nowrap">WorldPassport</span>}
-          <button onClick={() => setSidebarOpen(o => !o)} className="ml-auto text-white/40 hover:text-white transition-colors">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              {sidebarOpen ? <path strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6" /> : <path strokeLinecap="round" strokeLinejoin="round" d="M9 18l6-6-6-6" />}
-            </svg>
+          <span className="text-white font-bold text-[15px] tracking-tight whitespace-nowrap">WorldPassport</span>
+          <button onClick={() => setSidebarOpen(false)} className="ml-auto text-white/40 hover:text-white transition-colors lg:hidden">
+            <X size={18} />
           </button>
         </div>
 
@@ -558,11 +566,11 @@ export default function AdminDashboard() {
           {navItems.map(item => {
             const active = activeTab === item.id;
             return (
-              <button key={item.id} onClick={() => setActiveTab(item.id)} title={!sidebarOpen ? item.label : undefined}
+              <button key={item.id} onClick={() => { setActiveTab(item.id); setSidebarOpen(false); }} title={item.label}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${active ? 'text-white shadow-lg' : 'text-white/50 hover:text-white hover:bg-white/8'}`}
                 style={active ? { background: 'linear-gradient(135deg,#7C3AED,#6D28D9)', boxShadow: '0 4px 15px rgba(124,58,237,0.4)' } : {}}>
                 <span className="flex-shrink-0">{item.icon}</span>
-                {sidebarOpen && <span className="whitespace-nowrap">{item.label}</span>}
+                <span className="whitespace-nowrap">{item.label}</span>
               </button>
             );
           })}
@@ -570,30 +578,42 @@ export default function AdminDashboard() {
 
         {/* Back to Website */}
         <div className="px-3 py-4 border-t border-white/10">
-          <button onClick={() => router.push('/')} title={!sidebarOpen ? 'Back to Website' : undefined}
+          <button onClick={() => { router.push('/'); setSidebarOpen(false); }} title="Back to Website"
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/40 hover:text-white hover:bg-white/8 transition-all">
             <ExternalLink size={18} className="flex-shrink-0" />
-            {sidebarOpen && <span className="whitespace-nowrap">Back to Website</span>}
+            <span className="whitespace-nowrap">Back to Website</span>
           </button>
         </div>
       </aside>
 
       {/* ── MAIN ── */}
-      <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
+      <div className="flex-1 flex flex-col min-h-screen overflow-hidden min-w-0">
 
         {/* Top bar */}
         <header className="bg-white border-b border-gray-200/80 sticky top-0 z-10 shadow-sm">
-          <div className="flex items-center justify-between px-6 py-3.5 gap-4">
-            <h2 className="text-lg font-bold text-gray-800 capitalize">
-              {navItems.find(n => n.id === activeTab)?.label ?? 'Dashboard'}
-            </h2>
-            <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 gap-4">
+            <div className="flex items-center gap-3">
+              {/* Hamburger — mobile only */}
+              <button
+                onClick={() => setSidebarOpen(o => !o)}
+                className="lg:hidden w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                aria-label="Open menu"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+              <h2 className="text-base sm:text-lg font-bold text-gray-800 capitalize">
+                {navItems.find(n => n.id === activeTab)?.label ?? 'Dashboard'}
+              </h2>
+            </div>
+            <div className="flex items-center gap-2 sm:gap-4">
               <div className="text-right hidden sm:block">
-                <p className="text-sm font-semibold text-gray-800">bmworldpassport.in.in</p>
+                <p className="text-sm font-semibold text-gray-800">bmworldpassport.in</p>
                 <p className="text-xs text-gray-400">Administrator</p>
               </div>
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm shadow" style={{ background: 'linear-gradient(135deg,#7C3AED,#4F46E5)' }}>A</div>
-              <button onClick={handleLogout} title="Logout" className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-all border border-red-100">
+              <button onClick={handleLogout} title="Logout" className="flex items-center gap-1.5 px-2 sm:px-3 py-2 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-all border border-red-100">
                 <LogOut size={16} />
                 <span className="hidden sm:inline">Logout</span>
               </button>
@@ -602,7 +622,7 @@ export default function AdminDashboard() {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-6 lg:p-8 overflow-y-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
 
           {/* ── DASHBOARD ── */}
           {activeTab === 'dashboard' && (
@@ -623,7 +643,7 @@ export default function AdminDashboard() {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
                 <StatCard icon={<GraduationCap size={22} />} label="Universities" value={loading ? '—' : universities.length} color="linear-gradient(135deg,#6D28D9,#7C3AED)" onClick={() => setActiveTab('universities')} />
                 <StatCard icon={<BookOpen size={22} />} label="Courses" value={loading ? '—' : courses.length} color="linear-gradient(135deg,#0EA5E9,#2563EB)" onClick={() => setActiveTab('courses')} />
                 <StatCard icon={<Mail size={22} />} label="Messages" value={loading ? '—' : contacts.length} color="linear-gradient(135deg,#10B981,#059669)" onClick={() => setActiveTab('contacts')} />
@@ -663,17 +683,17 @@ export default function AdminDashboard() {
           {/* ── UNIVERSITIES ── */}
           {activeTab === 'universities' && (
             <div>
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900">Universities</h2>
-                  <p className="text-sm text-gray-400 mt-0.5">{loading ? '…' : `${universities.length} universities • visible on website`}</p>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900">Universities</h2>
+                    <p className="text-sm text-gray-400 mt-0.5">{loading ? '…' : `${universities.length} universities • visible on website`}</p>
+                  </div>
+                  <button onClick={openAdd}
+                    className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold text-white shadow-md transition-all hover:opacity-90 hover:scale-105 w-full sm:w-auto justify-center"
+                    style={{ background: 'linear-gradient(135deg,#6D28D9,#7C3AED)' }}>
+                    <Plus size={16} /> Add University
+                  </button>
                 </div>
-                <button onClick={openAdd}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white shadow-md transition-all hover:opacity-90 hover:scale-105"
-                  style={{ background: 'linear-gradient(135deg,#6D28D9,#7C3AED)' }}>
-                  <Plus size={16} /> Add University
-                </button>
-              </div>
 
               {loading ? <Spinner /> : universities.length === 0
                 ? <Empty label="No universities yet. Click 'Add University' to get started — they'll appear live on the website." />
@@ -692,8 +712,8 @@ export default function AdminDashboard() {
                                 <GraduationCap size={40} className="text-violet-300" />
                               </div>
                             )}
-                            {/* Action buttons overlay */}
-                            <div className="absolute top-2 right-2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                            {/* Action buttons - always visible on mobile, hover on desktop */}
+                            <div className="absolute top-2 right-2 flex gap-1.5 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
                               <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); openEdit(u); }} title="Edit"
                                 className="w-8 h-8 rounded-lg bg-white/90 hover:bg-white flex items-center justify-center shadow transition-all text-violet-600">
                                 <Pencil size={13} />
@@ -737,17 +757,17 @@ export default function AdminDashboard() {
           {/* ── COURSES ── */}
           {activeTab === 'courses' && (
             <div>
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900">Courses</h2>
-                  <p className="text-sm text-gray-400 mt-0.5">{loading ? '…' : `${courses.length} courses added`}</p>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900">Courses</h2>
+                    <p className="text-sm text-gray-400 mt-0.5">{loading ? '…' : `${courses.length} courses added`}</p>
+                  </div>
+                  <button onClick={() => setShowCourseModal(true)}
+                    className="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold text-white shadow-md transition-all hover:opacity-90 hover:scale-105 w-full sm:w-auto justify-center"
+                    style={{ background: 'linear-gradient(135deg,#0EA5E9,#2563EB)' }}>
+                    <Plus size={16} /> Add Course
+                  </button>
                 </div>
-                <button onClick={() => setShowCourseModal(true)}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white shadow-md transition-all hover:opacity-90 hover:scale-105"
-                  style={{ background: 'linear-gradient(135deg,#0EA5E9,#2563EB)' }}>
-                  <Plus size={16} /> Add Course
-                </button>
-              </div>
 
               {loading ? <Spinner /> : courses.length === 0
                 ? <Empty label="No courses yet. Click 'Add Course' to get started." />
@@ -785,22 +805,6 @@ export default function AdminDashboard() {
               </div>
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 {loading ? <Spinner /> : contacts.length === 0 ? <Empty label="No contact submissions yet." /> : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="bg-gray-50 text-left">
-                          {['#', 'Name', 'Email', 'Phone', 'Subject', 'Message', 'Date'].map(h => (
-                            <th key={h} className="px-5 py-3.5 text-xs font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {contacts.map((c, i) => (
-                          <tr key={c._id} className={`border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'} hover:bg-violet-50/30 transition-colors`}>
-                            <td className="px-5 py-4 text-gray-300 font-mono text-xs">{i + 1}</td>
-                            <td className="px-5 py-4 font-semibold text-gray-900 whitespace-nowrap">{c.name}</td>
-                            <td className="px-5 py-4 text-blue-600 whitespace-nowrap"><a href={`mailto:${c.email}`} className="hover:underline">{c.email}</a></td>
-                            <td className="px-5 py-4 text-gray-500 whitespace-nowrap">{c.phone || '—'}</td>
                             <td className="px-5 py-4 text-gray-500 max-w-[140px] truncate">{c.subject || '—'}</td>
                             <td className="px-5 py-4 text-gray-400 max-w-[200px] truncate" title={c.message}>{c.message}</td>
                             <td className="px-5 py-4 text-gray-300 text-xs whitespace-nowrap">{new Date(c.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
@@ -823,8 +827,8 @@ export default function AdminDashboard() {
               </div>
 
               {/* Search & Filter Controls */}
-              <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm mb-6 flex flex-wrap gap-4 items-center">
-                <div className="flex-1 min-w-[240px]">
+              <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm mb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                <div className="flex-1">
                   <input
                     type="text"
                     placeholder="Search by organization name or contact..."
@@ -833,7 +837,7 @@ export default function AdminDashboard() {
                     onChange={e => setPartnerSearch(e.target.value)}
                   />
                 </div>
-                <div className="w-48">
+                <div className="sm:w-44">
                   <select
                     className={inputCls}
                     value={partnerCountryFilter}
@@ -845,7 +849,7 @@ export default function AdminDashboard() {
                     ))}
                   </select>
                 </div>
-                <div className="w-48">
+                <div className="sm:w-44">
                   <select
                     className={inputCls}
                     value={partnerStatusFilter}
@@ -866,69 +870,121 @@ export default function AdminDashboard() {
                 ) : filteredPartners.length === 0 ? (
                   <Empty label="No partner requests found matching the search/filters." />
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="bg-gray-50 text-left">
-                          {['#', 'Organization', 'Contact Person', 'Email', 'Phone', 'Country', 'Interest', 'Status', 'Actions'].map(h => (
-                            <th key={h} className="px-5 py-3.5 text-xs font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {filteredPartners.map((p, i) => (
-                          <tr key={p._id} className={`border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'} hover:bg-violet-50/30 transition-colors`}>
-                            <td className="px-5 py-4 text-gray-300 font-mono text-xs">{i + 1}</td>
-                            <td className="px-5 py-4 font-semibold text-gray-900 whitespace-nowrap cursor-pointer hover:text-violet-600 transition-colors" onClick={() => setSelectedPartner(p)}>
-                              {p.organizationName}
-                            </td>
-                            <td className="px-5 py-4 text-gray-600 whitespace-nowrap">{p.contactPerson}</td>
-                            <td className="px-5 py-4 text-blue-600 whitespace-nowrap">
-                              <a href={`mailto:${p.email}`} className="hover:underline">{p.email}</a>
-                            </td>
-                            <td className="px-5 py-4 text-gray-500 whitespace-nowrap">{p.phone}</td>
-                            <td className="px-5 py-4 text-gray-500 whitespace-nowrap">{p.country}</td>
-                            <td className="px-5 py-4 text-gray-500 whitespace-nowrap">
-                              <span className="text-xs px-2.5 py-1 rounded-full font-medium bg-gray-100 text-gray-600">
-                                {p.interest}
-                              </span>
-                            </td>
-                            <td className="px-5 py-4 whitespace-nowrap">
-                              <select
-                                value={p.status}
-                                onChange={(e) => updatePartnerStatus(p._id, e.target.value as any)}
-                                className={`text-xs font-semibold px-2 py-1 rounded-lg border focus:outline-none transition-colors cursor-pointer ${
-                                  p.status === 'Approved'
-                                    ? 'bg-green-50 text-green-700 border-green-200'
-                                    : p.status === 'Rejected'
-                                    ? 'bg-red-50 text-red-700 border-red-200'
-                                    : 'bg-amber-50 text-amber-700 border-amber-200'
-                                }`}
-                              >
-                                <option value="Pending">Pending</option>
-                                <option value="Approved">Approved</option>
-                                <option value="Rejected">Rejected</option>
-                              </select>
-                            </td>
-                            <td className="px-5 py-4 whitespace-nowrap flex items-center gap-2">
-                              <button
-                                onClick={() => setSelectedPartner(p)}
-                                className="px-3 py-1 rounded-lg bg-violet-50 hover:bg-violet-100 text-violet-600 font-semibold text-xs transition-colors"
-                              >
-                                View
-                              </button>
-                              <button
-                                onClick={() => deletePartner(p._id)}
-                                className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all"
-                                title="Delete Request"
-                              >
-                                <Trash2 size={15} />
-                              </button>
-                            </td>
+                  <div>
+                    {/* Desktop Table */}
+                    <div className="hidden md:block overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="bg-gray-50 text-left">
+                            {['#', 'Organization', 'Contact Person', 'Email', 'Phone', 'Country', 'Interest', 'Status', 'Actions'].map(h => (
+                              <th key={h} className="px-5 py-3.5 text-xs font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>
+                            ))}
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {filteredPartners.map((p, i) => (
+                            <tr key={p._id} className={`border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'} hover:bg-violet-50/30 transition-colors`}>
+                              <td className="px-5 py-4 text-gray-300 font-mono text-xs">{i + 1}</td>
+                              <td className="px-5 py-4 font-semibold text-gray-900 whitespace-nowrap cursor-pointer hover:text-violet-600 transition-colors" onClick={() => setSelectedPartner(p)}>
+                                {p.organizationName}
+                              </td>
+                              <td className="px-5 py-4 text-gray-600 whitespace-nowrap">{p.contactPerson}</td>
+                              <td className="px-5 py-4 text-blue-600 whitespace-nowrap">
+                                <a href={`mailto:${p.email}`} className="hover:underline">{p.email}</a>
+                              </td>
+                              <td className="px-5 py-4 text-gray-500 whitespace-nowrap">{p.phone}</td>
+                              <td className="px-5 py-4 text-gray-500 whitespace-nowrap">{p.country}</td>
+                              <td className="px-5 py-4 text-gray-500 whitespace-nowrap">
+                                <span className="text-xs px-2.5 py-1 rounded-full font-medium bg-gray-100 text-gray-600">
+                                  {p.interest}
+                                </span>
+                              </td>
+                              <td className="px-5 py-4 whitespace-nowrap">
+                                <select
+                                  value={p.status}
+                                  onChange={(e) => updatePartnerStatus(p._id, e.target.value as any)}
+                                  className={`text-xs font-semibold px-2 py-1 rounded-lg border focus:outline-none transition-colors cursor-pointer ${
+                                    p.status === 'Approved'
+                                      ? 'bg-green-50 text-green-700 border-green-200'
+                                      : p.status === 'Rejected'
+                                      ? 'bg-red-50 text-red-700 border-red-200'
+                                      : 'bg-amber-50 text-amber-700 border-amber-200'
+                                  }`}
+                                >
+                                  <option value="Pending">Pending</option>
+                                  <option value="Approved">Approved</option>
+                                  <option value="Rejected">Rejected</option>
+                                </select>
+                              </td>
+                              <td className="px-5 py-4 whitespace-nowrap">
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => setSelectedPartner(p)}
+                                    className="px-3 py-1 rounded-lg bg-violet-50 hover:bg-violet-100 text-violet-600 font-semibold text-xs transition-colors"
+                                  >
+                                    View
+                                  </button>
+                                  <button
+                                    onClick={() => deletePartner(p._id)}
+                                    className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all"
+                                    title="Delete Request"
+                                  >
+                                    <Trash2 size={15} />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    {/* Mobile Cards */}
+                    <div className="md:hidden divide-y divide-gray-50">
+                      {filteredPartners.map((p, i) => (
+                        <div key={p._id} className="p-4 space-y-2">
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex-1 min-w-0">
+                              <p className="font-bold text-gray-900 text-sm leading-tight truncate">{p.organizationName}</p>
+                              <p className="text-xs text-gray-500 mt-0.5">{p.contactPerson} · {p.country}</p>
+                            </div>
+                            <select
+                              value={p.status}
+                              onChange={(e) => updatePartnerStatus(p._id, e.target.value as any)}
+                              className={`text-xs font-semibold px-2 py-1 rounded-lg border focus:outline-none flex-shrink-0 ${
+                                p.status === 'Approved'
+                                  ? 'bg-green-50 text-green-700 border-green-200'
+                                  : p.status === 'Rejected'
+                                  ? 'bg-red-50 text-red-700 border-red-200'
+                                  : 'bg-amber-50 text-amber-700 border-amber-200'
+                              }`}
+                            >
+                              <option value="Pending">Pending</option>
+                              <option value="Approved">Approved</option>
+                              <option value="Rejected">Rejected</option>
+                            </select>
+                          </div>
+                          <a href={`mailto:${p.email}`} className="block text-xs text-blue-600 hover:underline">{p.email}</a>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-medium">{p.interest}</span>
+                            <span className="text-xs text-gray-400">{p.phone}</span>
+                          </div>
+                          <div className="flex gap-2 pt-1">
+                            <button
+                              onClick={() => setSelectedPartner(p)}
+                              className="flex-1 py-1.5 rounded-lg bg-violet-50 hover:bg-violet-100 text-violet-600 font-semibold text-xs transition-colors"
+                            >
+                              View Details
+                            </button>
+                            <button
+                              onClick={() => deletePartner(p._id)}
+                              className="px-3 py-1.5 rounded-lg text-red-400 hover:text-red-600 hover:bg-red-50 transition-all"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -952,7 +1008,7 @@ export default function AdminDashboard() {
               <label className={labelCls}>Course Title *</label>
               <input required className={inputCls} placeholder="e.g. MSc Data Science" value={courseForm.title} onChange={e => setCourseForm(p => ({ ...p, title: e.target.value }))} />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className={labelCls}>University *</label>
                 <input required className={inputCls} placeholder="University of Amsterdam" value={courseForm.university} onChange={e => setCourseForm(p => ({ ...p, university: e.target.value }))} />
@@ -968,7 +1024,7 @@ export default function AdminDashboard() {
                 {["Bachelor's", "Master's", "PhD", "MBA", "Certificate"].map(l => <option key={l}>{l}</option>)}
               </select>
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label className={labelCls}>Duration</label>
                 <input className={inputCls} placeholder="2 years" value={courseForm.duration} onChange={e => setCourseForm(p => ({ ...p, duration: e.target.value }))} />
@@ -1004,7 +1060,7 @@ export default function AdminDashboard() {
               <span className="block text-xs font-semibold text-gray-400 uppercase tracking-wide">Organization Name</span>
               <p className="text-sm font-bold text-gray-900 mt-0.5">{selectedPartner.organizationName}</p>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <span className="block text-xs font-semibold text-gray-400 uppercase tracking-wide">Contact Person</span>
                 <p className="text-sm font-semibold text-gray-800 mt-0.5">{selectedPartner.contactPerson}</p>
@@ -1014,7 +1070,7 @@ export default function AdminDashboard() {
                 <p className="text-sm font-semibold text-gray-800 mt-0.5">{selectedPartner.country}</p>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <span className="block text-xs font-semibold text-gray-400 uppercase tracking-wide">Email Address</span>
                 <p className="text-sm font-semibold text-blue-600 mt-0.5">
@@ -1026,7 +1082,7 @@ export default function AdminDashboard() {
                 <p className="text-sm font-semibold text-gray-800 mt-0.5">{selectedPartner.phone}</p>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <span className="block text-xs font-semibold text-gray-400 uppercase tracking-wide">Partnership Interest</span>
                 <p className="text-sm font-semibold text-gray-800 mt-0.5">
