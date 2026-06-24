@@ -45,10 +45,11 @@ export default function Footer() {
             <div className="flex justify-center mb-6">
               <Logo size={80} animate={false} />
             </div>
-            <h2 className="font-display font-bold text-3xl md:text-4xl text-gray-900 mb-4">
+
+            <h2 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl text-gray-900 mb-4">
               Ready to <span className="text-gradient">Take Aim</span> at Your Future?
             </h2>
-            <p className="text-gray-500 text-lg mb-8 max-w-xl mx-auto">
+            <p className="text-gray-500 text-base sm:text-lg mb-8 max-w-xl mx-auto">
               Join 10,000+ students who trusted World Passport to guide them to world-class universities
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">

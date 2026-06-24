@@ -45,7 +45,7 @@ export default function ContactPage() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section className="relative min-h-[65vh] flex flex-col justify-end overflow-hidden bg-[#060C1F]">
+      <section className="relative min-h-[60vh] sm:min-h-[65vh] flex flex-col justify-end overflow-hidden bg-[#060C1F]">
 
         {/* Background image */}
         <img
@@ -86,11 +86,11 @@ export default function ContactPage() {
               <MessageCircle size={13} className="text-blue-400" />
               <span className="text-white text-xs font-semibold tracking-widest uppercase">Get in Touch</span>
             </div>
-            <h1 className="font-display font-bold text-5xl md:text-6xl text-white mb-5 leading-tight">
+            <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl text-white mb-5 leading-tight">
               Let&apos;s Talk About Your{' '}
               <span className="text-white">Future</span>
             </h1>
-            <p className="text-white/60 text-xl max-w-2xl mx-auto">
+            <p className="text-white/60 text-base sm:text-xl max-w-2xl mx-auto">
               Book a free counselling session with our education experts. No commitment, no hidden fees.
             </p>
           </motion.div>

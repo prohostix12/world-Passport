@@ -222,7 +222,7 @@ export default function SkillPage() {
       <Navbar />
 
       {/* ── HERO ── */}
-      <section className="relative min-h-[88vh] flex flex-col justify-end overflow-hidden bg-[#060C1F]">
+      <section className="relative min-h-[100svh] sm:min-h-[88vh] flex flex-col justify-end overflow-hidden bg-[#060C1F]">
 
         {/* Background image — flight.png */}
         <img
@@ -267,11 +267,11 @@ export default function SkillPage() {
               <span className="text-white text-xs font-semibold tracking-widest uppercase">SkillDad Programs</span>
             </div>
 
-            <h1 className="font-display font-bold text-5xl md:text-6xl lg:text-7xl leading-[1.06] text-white mb-5">
+            <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.06] text-white mb-5">
               Preparing the Next Generation of{' '}
               <span className="text-white">Global Professionals</span>
             </h1>
-            <p className="text-white/60 text-xl max-w-2xl mx-auto mb-12">
+            <p className="text-white/60 text-base sm:text-xl max-w-2xl mx-auto mb-10 sm:mb-12">
               University-affiliated professional certification programs in collaboration with
               recognized international higher education institutions.
             </p>
@@ -285,9 +285,9 @@ export default function SkillPage() {
                 { val: 'Online', label: 'Delivery',             color: '#DC2626' },
                 { val: '100%',   label: 'Career Support',       color: '#3B82F6' },
               ].map((s, i) => (
-                <div key={s.label} className={`px-8 py-4 text-center ${i < 3 ? 'border-r border-white/10' : ''}`}>
-                  <div className="font-bold text-lg" style={{ color: s.color }}>{s.val}</div>
-                  <div className="text-white/40 text-xs mt-0.5">{s.label}</div>
+                <div key={s.label} className={`px-4 sm:px-8 py-3 sm:py-4 text-center ${i < 3 ? 'border-r border-white/10' : ''}`}>
+                  <div className="font-bold text-base sm:text-lg" style={{ color: s.color }}>{s.val}</div>
+                  <div className="text-white/40 text-[10px] sm:text-xs mt-0.5">{s.label}</div>
                 </div>
               ))}
             </div>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#060C1F]">
+    <section className="relative min-h-[100svh] sm:min-h-[90vh] flex items-center overflow-hidden bg-[#060C1F]">
 
       {/* ── Background image ── */}
       <div className="absolute inset-0 z-0">
@@ -14,7 +14,7 @@ export default function Hero() {
           style={{
             backgroundImage: "url('/assets/hero-students.png')",
             backgroundSize: 'cover',
-            backgroundPosition: 'center center',
+            backgroundPosition: 'center top',
             backgroundRepeat: 'no-repeat',
           }}
         />
@@ -27,7 +27,7 @@ export default function Hero() {
       </div>
 
       {/* ── Content ── */}
-      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10 pt-28 pb-16">
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10 pt-24 sm:pt-28 pb-16">
         <div className="max-w-2xl">
 
           {/* Welcome pill */}
@@ -50,7 +50,7 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="font-display font-black leading-[1.05] mb-6"
-            style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)' }}
+            style={{ fontSize: 'clamp(1.9rem, 5.5vw, 4.2rem)' }}
           >
             <span className="text-white">Transforming</span>{' '}
             <span className="text-white">Global</span>
@@ -65,7 +65,7 @@ export default function Hero() {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="text-slate-300 text-lg leading-relaxed mb-10 max-w-lg"
+            className="text-slate-300 text-base sm:text-lg leading-relaxed mb-8 sm:mb-10 max-w-lg"
           >
             World Passport is a premier platform that transforms your international
             career aspirations into reality through world-class education.
@@ -76,15 +76,15 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.6 }}
-            className="flex flex-wrap gap-4 mb-12"
+            className="flex flex-wrap gap-3 sm:gap-4 mb-10 sm:mb-12"
           >
             <Link
               href="/contact"
-              className="rounded-full px-8 py-3.5 text-sm text-white font-semibold flex items-center gap-2 bg-blue-700 transition-all duration-300 hover:shadow-[0_28px_60px_rgba(37,99,235,0.50)] hover:scale-105"
+              className="rounded-full px-6 sm:px-8 py-3 sm:py-3.5 text-sm text-white font-semibold flex items-center gap-2 bg-blue-700 transition-all duration-300 hover:shadow-[0_28px_60px_rgba(37,99,235,0.50)] hover:scale-105"
             >
               Start Your Journey <ArrowRight size={16} />
             </Link>
-            <button className="rounded-full px-6 py-3.5 text-sm text-white font-semibold flex items-center gap-2 border border-white/20 hover:bg-white/20 transition-all duration-300">
+            <button className="rounded-full px-5 sm:px-6 py-3 sm:py-3.5 text-sm text-white font-semibold flex items-center gap-2 border border-white/20 hover:bg-white/20 transition-all duration-300">
               <Play size={14} className="fill-white" /> Learn More
             </button>
           </motion.div>
@@ -94,7 +94,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 0.5 }}
-            className="flex flex-wrap items-center gap-6"
+            className="flex flex-wrap items-center gap-4 sm:gap-6"
           >
             {[
               { icon: CheckCircle, text: '100+ Partner Universities', color: '#3B82F6' },

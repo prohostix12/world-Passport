@@ -39,7 +39,7 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 overflow-x-hidden ${
           scrolled
             ? 'py-3'
             : isLightHero
@@ -49,7 +49,7 @@ export default function Navbar() {
       >
         <div className={`max-w-7xl mx-auto flex items-center justify-between transition-all duration-500 ${
           scrolled 
-            ? 'bg-white/80 backdrop-blur-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 rounded-full px-6 py-2 mx-4 lg:mx-auto' 
+            ? 'bg-white/80 backdrop-blur-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 rounded-full px-4 sm:px-6 py-2 mx-3 sm:mx-4 lg:mx-auto' 
             : 'px-4 sm:px-6 lg:px-10 gap-4'
         }`}>
 
@@ -104,12 +104,13 @@ export default function Navbar() {
 
           {/* Mobile toggle */}
           <button onClick={() => setMobileOpen(!mobileOpen)}
-            className={`md:hidden w-11 h-11 rounded-full border flex items-center justify-center transition-all ${
+            aria-label="Toggle menu"
+            className={`md:hidden w-10 h-10 sm:w-11 sm:h-11 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${
               isDark
                 ? 'bg-white shadow-sm border-slate-200 text-slate-700'
                 : 'bg-white/10 backdrop-blur-md border-white/20 text-white'
             }`}>
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
       </motion.header>

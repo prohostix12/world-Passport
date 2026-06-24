@@ -229,7 +229,7 @@ export default function OverseasPage() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section ref={heroRef} className="relative min-h-[95vh] flex flex-col justify-end overflow-hidden">
+      <section ref={heroRef} className="relative min-h-[100svh] sm:min-h-[95vh] flex flex-col justify-end overflow-hidden">
 
         {/* Full-bleed background */}
         <div className="absolute inset-0">
@@ -278,11 +278,11 @@ export default function OverseasPage() {
               <span className="text-white font-semibold">Europe</span>
             </div>
 
-            <h1 className="font-display font-bold text-5xl md:text-7xl text-white mb-5 leading-tight">
+            <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-7xl text-white mb-5 leading-tight">
               Where Will You<br />
               <span className="text-white">Study Next?</span>
             </h1>
-            <p className="text-white/55 text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">
+            <p className="text-white/55 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">
               6 countries. 400+ universities. 1 trusted guide.
               We handle everything from application to arrival — you just pack your bags.
             </p>
@@ -314,9 +314,9 @@ export default function OverseasPage() {
               { val: '6', label: 'Countries', color: '#FF3B3B' },
             ].map((s, i) => (
               <div key={s.label}
-                className={`flex-1 min-w-[100px] px-4 py-4 text-center ${i < 3 ? 'border-r border-white/6' : ''}`}>
-                <div className="font-bold text-white text-lg" style={{ color: s.color }}>{s.val}</div>
-                <div className="text-white/35 text-xs mt-0.5">{s.label}</div>
+                className={`flex-1 min-w-[70px] sm:min-w-[100px] px-2 sm:px-4 py-3 sm:py-4 text-center ${i < 3 ? 'border-r border-white/6' : ''}`}>
+                <div className="font-bold text-white text-base sm:text-lg" style={{ color: s.color }}>{s.val}</div>
+                <div className="text-white/35 text-[10px] sm:text-xs mt-0.5">{s.label}</div>
               </div>
             ))}
           </motion.div>

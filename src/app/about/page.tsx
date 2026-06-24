@@ -51,7 +51,7 @@ export default function AboutPage() {
       <Navbar />
 
       {/* Hero — overseas-style full-bleed */}
-      <section className="relative min-h-[90vh] flex flex-col justify-end overflow-hidden bg-[#f0f4ff]">
+      <section className="relative min-h-[100svh] sm:min-h-[90vh] flex flex-col justify-end overflow-hidden bg-[#f0f4ff]">
 
         {/* Full-bleed background image */}
         <img
@@ -85,7 +85,7 @@ export default function AboutPage() {
         </svg>
 
         {/* Centered content */}
-        <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 pb-12 pt-36">
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 pb-10 sm:pb-12 pt-28 sm:pt-36">
           <motion.div initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
 
             {/* Overline */}
@@ -94,11 +94,11 @@ export default function AboutPage() {
               <span className="text-white text-xs font-semibold tracking-widest uppercase">Our Story</span>
             </div>
 
-            <h1 className="font-display font-bold text-5xl md:text-7xl text-white mb-5 leading-tight">
+            <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-7xl text-white mb-5 leading-tight">
               A Decade of<br />
               <span className="text-white">Changing Lives</span>
             </h1>
-            <p className="text-white text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+            <p className="text-white text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
               Founded in 2015 with one belief: no student should have to choose between their dreams and their family. Today, 10,000+ lives later, that belief drives everything we do.
             </p>
 
@@ -127,9 +127,9 @@ export default function AboutPage() {
                 { val: '12', label: 'European Countries', color: '#DC2626' },
               ].map((s, i) => (
                 <div key={s.label}
-                  className={`flex-1 min-w-[100px] px-4 py-4 text-center ${i < 3 ? 'border-r border-gray-200' : ''}`}>
-                  <div className="font-bold text-lg" style={{ color: s.color }}>{s.val}</div>
-                  <div className="text-gray-500 text-xs mt-0.5">{s.label}</div>
+                  className={`flex-1 min-w-[80px] px-2 sm:px-4 py-3 sm:py-4 text-center ${i < 3 ? 'border-r border-gray-200' : ''}`}>
+                  <div className="font-bold text-base sm:text-lg" style={{ color: s.color }}>{s.val}</div>
+                  <div className="text-gray-500 text-[10px] sm:text-xs mt-0.5">{s.label}</div>
                 </div>
               ))}
             </motion.div>
